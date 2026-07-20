@@ -17,8 +17,8 @@ export const GLENN_INFO = {
   
   contactLinks: {
     messenger: "https://m.me/glennjhune.polia", // Replace with your real Messenger link/username
-    whatsapp: "https://wa.me/639171234567",       // Replace with your real WhatsApp link
-    calendar: "https://calendar.google.com/calendar/u/0/r/week", // Replace with your real Google Calendar link
+    whatsapp: "https://wa.me/639388589282",
+    calendar: "https://calendar.app.google/TaT2imNBG9WA8jqz6",
     email: "glennpolia9@gmail.com"
   }
 };
