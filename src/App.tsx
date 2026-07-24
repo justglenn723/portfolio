@@ -390,6 +390,27 @@ export default function App() {
               Call Me
             </a>
           </div>
+          <div className="chip-stack">
+            {CHIPS.map((chip, idx) => (
+              <span key={idx} className="chip">
+                {chip}
+              </span>
+            ))}
+          </div>
+          <div className="hero-meta">
+            <div className="social-stack">
+              <a href={messenger} target="_blank" rel="noopener noreferrer" className="soc-icon" title="Messenger">
+                <IconMessenger />
+              </a>
+              <a href={whatsapp} target="_blank" rel="noopener noreferrer" className="soc-icon" title="WhatsApp">
+                <IconWhatsapp />
+              </a>
+            </div>
+            <a href={`tel:+${whatsappDigits}`} className="contact-pill">
+              <IconPhone />
+              {phoneDisplay}
+            </a>
+          </div>
         </div>
 
         <div className="hero-center">
@@ -402,29 +423,6 @@ export default function App() {
             {GLENN_INFO.title}
             <strong>{GLENN_INFO.name}</strong>
           </div>
-        </div>
-
-        <div className="hero-right">
-          <div className="chip-stack">
-            {CHIPS.map((chip, idx) => (
-              <span key={idx} className="chip">
-                {chip}
-              </span>
-            ))}
-          </div>
-          <div className="social-stack">
-            <a href={messenger} target="_blank" rel="noopener noreferrer" className="soc-icon" title="Messenger">
-              <IconMessenger />
-            </a>
-            <a href={whatsapp} target="_blank" rel="noopener noreferrer" className="soc-icon" title="WhatsApp">
-              <IconWhatsapp />
-            </a>
-          </div>
-          <span className="soc-label">Connect</span>
-          <a href={`tel:+${whatsappDigits}`} className="contact-pill">
-            <IconPhone />
-            {phoneDisplay}
-          </a>
         </div>
 
         <div className="hero-bottom">

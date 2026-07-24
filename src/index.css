@@ -130,11 +130,12 @@ body::before{
   position:relative;z-index:1;
   min-height:100vh;
   display:grid;
-  grid-template-columns:1fr 420px 1fr;
+  grid-template-columns:1fr 440px;
+  align-items:center;
   padding-top:80px
 }
 .hero-left{
-  padding:0 36px 0 60px;
+  padding:0 40px 0 60px;
   display:flex;flex-direction:column;gap:28px;
   justify-content:center;
   animation:fadeLeft 1s ease .2s both;
@@ -156,13 +157,13 @@ body::before{
 .hero-title strong{font-weight:700}
 .hero-bio{
   font-size:.9rem;line-height:1.85;color:var(--muted);
-  max-width:310px;font-weight:300;
+  max-width:460px;font-weight:300;
 }
 .ticker-wrap{
   overflow:hidden;white-space:nowrap;
   border-top:1px solid var(--border2);
   border-bottom:1px solid var(--border2);
-  padding:9px 0;max-width:340px;
+  padding:9px 0;max-width:460px;
 }
 .ticker{display:inline-block;animation:tickerAnim 22s linear infinite}
 .ticker span{font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--dimmed);margin-right:26px}
@@ -182,11 +183,11 @@ body::before{
 .btn svg{width:15px;height:15px}
 
 .hero-center{
-  display:flex;flex-direction:column;align-items:center;justify-content:flex-end;
-  padding-top:20px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:20px 60px 20px 0;
   animation:fadeUp 1s ease .4s both;
 }
-.photo-wrap{position:relative;width:330px;height:460px;flex-shrink:0}
+.photo-wrap{position:relative;width:360px;height:500px;flex-shrink:0}
 .photo-wrap::before{
   content:'';position:absolute;inset:-14px;
   border-radius:50% 50% 42% 42%;
@@ -196,7 +197,7 @@ body::before{
 .photo-wrap::after{
   content:'';position:absolute;inset:-28px;
   border-radius:50% 50% 44% 44%;
-  border:1px dashed rgba(201,169,110,.1);
+  border:1px dashed rgba(0,225,255,.12);
   animation:spinRing 38s linear infinite reverse;
 }
 @keyframes spinRing{to{transform:rotate(360deg)}}
@@ -227,19 +228,14 @@ body::before{
   font-size:1.45rem;font-weight:600;color:var(--text);
   letter-spacing:.08em;margin-top:4px;
 }
-.hero-right{
-  padding:0 60px 0 36px;
-  display:flex;flex-direction:column;
-  align-items:flex-end;gap:26px;justify-content:center;
-  animation:fadeRight 1s ease .2s both;
+.hero-meta{
+  display:flex;align-items:center;flex-wrap:wrap;
+  gap:18px;
+  animation:fadeUp 1s ease .5s both;
 }
-.social-stack{display:flex;flex-direction:column;align-items:center;gap:13px}
-.social-stack::before,.social-stack::after{content:'';display:block;width:1px;height:52px}
-.social-stack::before{background:linear-gradient(to bottom,transparent,var(--border))}
-.social-stack::after{background:linear-gradient(to top,transparent,var(--border))}
-.soc-label{font-size:.66rem;text-transform:uppercase;letter-spacing:.22em;color:var(--muted);writing-mode:vertical-rl;transform:rotate(180deg)}
+.social-stack{display:flex;flex-direction:row;align-items:center;gap:10px}
 .soc-icon{
-  width:46px;height:46px;border-radius:50%;
+  width:42px;height:42px;border-radius:50%;
   border:1px solid var(--border);background:var(--card);
   display:flex;align-items:center;justify-content:center;
   text-decoration:none;color:var(--muted);
@@ -251,8 +247,8 @@ body::before{
   background:rgba(0,225,255,.08);
   transform:scale(1.13) translateY(-2px);
 }
-.soc-icon svg{width:19px;height:19px}
-.chip-stack{display:flex;flex-direction:column;gap:8px;align-items:flex-end}
+.soc-icon svg{width:18px;height:18px}
+.chip-stack{display:flex;flex-direction:row;flex-wrap:wrap;gap:8px;align-items:center}
 .chip{
   font-size:.7rem;padding:6px 14px;
   border-radius:100px;border:1px solid var(--border);
@@ -704,16 +700,9 @@ footer{
   .hero-bio{max-width:100%}
   .ticker-wrap{max-width:90vw}
   .hero-cta{justify-content:center}
-  .hero-center{order:1;padding-top:90px}
+  .hero-center{order:1;padding:90px 0 0}
   .photo-wrap{width:230px;height:320px}
-  .hero-right{
-    order:3;flex-direction:row;flex-wrap:wrap;
-    padding:20px 22px;justify-content:center;gap:12px;
-  }
-  .social-stack{flex-direction:row}
-  .social-stack::before,.social-stack::after{display:none}
-  .soc-label{display:none}
-  .chip-stack{display:none}
+  .hero-meta{order:3;justify-content:center}
   .hero-bottom{padding:18px 22px}
   .about-grid{grid-template-columns:1fr;gap:48px}
   .stat-badges{right:0;bottom:-20px;flex-direction:row}
