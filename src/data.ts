@@ -58,52 +58,64 @@ export const SKILL_GROUPS: SkillGroup[] = [
 
 export const FUNNEL_PROJECTS: FunnelProject[] = [
   {
-    id: "saas-onboarding",
-    title: "SaaS Client Onboarding Funnel",
-    type: "Onboarding & Subscription Portal",
-    platform: "GoHighLevel / Custom CSS",
-    niche: "B2B Software / Marketing Agency",
-    description: "A highly streamlined, multi-step customer acquisition and onboarding funnel. Features integrated subscription billing with Stripe, custom styled responsive forms, and automated email/SMS welcome journeys.",
-    features: [
-      "Custom CSS styled inputs for premium look and feel",
-      "Stripe payment integration with dynamic coupon support",
-      "Interactive onboarding questionnaire mapping data directly to GHL custom fields",
-      "Instant agency-branded client welcome portal delivery"
-    ],
+    id: "funnel-build-1",
+    title: "GoHighLevel Funnel Build 1",
+    type: "Live Client Funnel",
+    platform: "GoHighLevel",
+    niche: "Client Project",
+    description: "A live funnel built and deployed in GoHighLevel. View the full working build via the link below.",
+    features: [],
     gradient: "from-teal-500/20 to-blue-500/10",
-    visualConcept: "Modern multi-step visual cards, progress indicators, minimalist order checkout, and custom glowing focus borders."
+    visualConcept: "Live GoHighLevel funnel build.",
+    liveUrl: "https://app.gohighlevel.com/v2/preview/T7r63z5lkenUyB7ZqSSq?notrack=true"
   },
   {
-    id: "high-ticket-coaching",
-    title: "High-Ticket VSL & Booking Funnel",
-    type: "VSL & Application Funnel",
-    platform: "GoHighLevel / Vimeo",
-    niche: "Consulting & High-Ticket Coaching",
-    description: "Built to maximize application rates for premium consultancies. Embeds an auto-playing high-definition VSL with deferred call-to-action buttons, moving prospects seamlessly into a calendar booking framework.",
-    features: [
-      "Deferred booking button trigger syncing with the video timestamp",
-      "GoHighLevel booking calendar custom theme matching corporate branding",
-      "Automated WhatsApp & Email follow-ups to maximize calendar attendance",
-      "Interactive qualitative survey before session confirmation"
-    ],
+    id: "funnel-build-2",
+    title: "GoHighLevel Funnel Build 2",
+    type: "Live Client Funnel",
+    platform: "GoHighLevel",
+    niche: "Client Project",
+    description: "A live funnel built and deployed in GoHighLevel. View the full working build via the link below.",
+    features: [],
     gradient: "from-amber-500/20 to-orange-500/10",
-    visualConcept: "Dark premium VSL player, high-contrast headline blocks, client testimonial cards, and a golden highlight calendar element."
+    visualConcept: "Live GoHighLevel funnel build.",
+    liveUrl: "https://app.gohighlevel.com/v2/preview/4Kldl6gfh04SWEOXoLm8?notrack=true"
   },
   {
-    id: "med-spa-leadgen",
-    title: "Local Aesthetic Clinic Funnel",
-    type: "Lead Gen & Coupon Funnel",
-    platform: "GoHighLevel / Mobile Responsive",
-    niche: "Local Business / Medical Spa",
-    description: "A localized hyper-converting lead generation page featuring a 20% off introductory voucher. Combines simple, beautiful mobile layout cards with automated GHL calendar booking to convert traffic into real appointments.",
-    features: [
-      "Ultra-fast loading times optimized for local mobile browsing",
-      "Automatic voucher code generation emailed and SMS'd to users",
-      "Direct connection to local salon management calendar",
-      "Custom FAQ section with accordion triggers to overcome standard objections"
-    ],
+    id: "funnel-build-3",
+    title: "GoHighLevel Funnel Build 3",
+    type: "Live Client Funnel",
+    platform: "GoHighLevel",
+    niche: "Client Project",
+    description: "A live funnel built and deployed in GoHighLevel. View the full working build via the link below.",
+    features: [],
     gradient: "from-pink-500/20 to-rose-500/10",
-    visualConcept: "Clean layout, soft aesthetic pastel imagery, reviews carousel, and a prominent floating primary offer button."
+    visualConcept: "Live GoHighLevel funnel build.",
+    liveUrl: "https://app.gohighlevel.com/v2/preview/8P91zxwp8ZsMdXbOqibF?notrack=true"
+  },
+  {
+    id: "funnel-build-4",
+    title: "GoHighLevel Funnel Build 4",
+    type: "Live Client Funnel",
+    platform: "GoHighLevel",
+    niche: "Client Project",
+    description: "A live funnel built and deployed in GoHighLevel. View the full working build via the link below.",
+    features: [],
+    gradient: "from-purple-500/20 to-indigo-500/10",
+    visualConcept: "Live GoHighLevel funnel build.",
+    liveUrl: "https://app.gohighlevel.com/v2/preview/7W6Ieb6PAlZJ4UOelx4T"
+  },
+  {
+    id: "funnel-build-5",
+    title: "GoHighLevel Funnel Build 5",
+    type: "Live Client Funnel",
+    platform: "GoHighLevel",
+    niche: "Client Project",
+    description: "A live funnel built and deployed in GoHighLevel. View the full working build via the link below.",
+    features: [],
+    gradient: "from-emerald-500/20 to-teal-500/10",
+    visualConcept: "Live GoHighLevel funnel build.",
+    liveUrl: "https://app.gohighlevel.com/v2/preview/f08rWhxfie91HDwC43CV?notrack=true"
   }
 ];
 

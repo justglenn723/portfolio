@@ -89,18 +89,14 @@ const ALL_TOOLS = Array.from(
   ])
 );
 
-function Initials({ name }: { name: string }) {
-  const initials = name
-    .split(" ")
-    .map((n) => n[0])
-    .filter(Boolean)
-    .slice(0, 2)
-    .join("");
+function HeroPhoto() {
   return (
-    <div className="h-40 w-40 md:h-52 md:w-52 rounded-3xl bg-gradient-to-br from-amber-400/20 to-amber-600/5 border border-amber-400/30 flex items-center justify-center shadow-[0_8px_40px_rgba(251,191,36,0.15)]">
-      <span className="text-5xl md:text-6xl font-display font-semibold text-amber-300 tracking-wide">
-        {initials}
-      </span>
+    <div className="h-48 w-48 md:h-60 md:w-60 rounded-3xl overflow-hidden border border-amber-400/30 shadow-[0_8px_40px_rgba(251,191,36,0.15)]">
+      <img
+        src="/glenn-hero.jpg"
+        alt={GLENN_INFO.name}
+        className="h-full w-full object-cover"
+      />
     </div>
   );
 }
@@ -223,7 +219,7 @@ export default function App() {
           </a>
         </div>
 
-        <Initials name={GLENN_INFO.name} />
+        <HeroPhoto />
       </section>
 
       {/* ABOUT */}
@@ -371,14 +367,28 @@ export default function App() {
                     {selectedFunnel === fun.id && (
                       <div className="pt-3 space-y-3 border-t border-white/5 mt-3">
                         <p className="text-xs text-zinc-400 font-light leading-relaxed">{fun.description}</p>
-                        <ul className="space-y-1.5">
-                          {fun.features.map((feat, idx) => (
-                            <li key={idx} className="flex items-start gap-2 text-[11px] text-zinc-400 font-light">
-                              <Check className="h-3 w-3 text-teal-400 shrink-0 mt-0.5" />
-                              {feat}
-                            </li>
-                          ))}
-                        </ul>
+                        {fun.features.length > 0 && (
+                          <ul className="space-y-1.5">
+                            {fun.features.map((feat, idx) => (
+                              <li key={idx} className="flex items-start gap-2 text-[11px] text-zinc-400 font-light">
+                                <Check className="h-3 w-3 text-teal-400 shrink-0 mt-0.5" />
+                                {feat}
+                              </li>
+                            ))}
+                          </ul>
+                        )}
+                        {fun.liveUrl && (
+                          <a
+                            href={fun.liveUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            onClick={(e) => e.stopPropagation()}
+                            className="inline-flex items-center gap-1.5 bg-teal-500/10 hover:bg-teal-500/20 border border-teal-500/30 text-teal-400 text-[11px] font-semibold px-3.5 py-2 rounded-lg transition"
+                          >
+                            View Live Funnel
+                            <ArrowUpRight className="h-3.5 w-3.5" />
+                          </a>
+                        )}
                       </div>
                     )}
                   </div>

@@ -8,6 +8,7 @@ export interface FunnelProject {
   description: string;
   gradient: string;
   visualConcept: string;
+  liveUrl?: string;
 }
 
 export interface GraphicsProject {
