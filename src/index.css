@@ -129,13 +129,23 @@ body::before{
 #hero{
   position:relative;z-index:1;
   min-height:88vh;
-  display:grid;
-  grid-template-columns:1fr 440px;
-  align-items:center;
+  display:flex;
+  flex-direction:column;
   padding-top:80px
 }
+.hero-main{
+  flex:1;
+  width:100%;
+  max-width:1320px;
+  margin:0 auto;
+  display:grid;
+  grid-template-columns:minmax(0,640px) 440px;
+  justify-content:center;
+  align-items:center;
+  gap:48px;
+  padding:0 40px;
+}
 .hero-left{
-  padding:0 40px 0 60px;
   display:flex;flex-direction:column;gap:18px;
   justify-content:center;
   animation:fadeLeft 1s ease .2s both;
@@ -184,7 +194,6 @@ body::before{
 
 .hero-center{
   display:flex;flex-direction:column;align-items:center;justify-content:center;
-  padding:20px 60px 20px 0;
   animation:fadeUp 1s ease .4s both;
 }
 .photo-wrap{position:relative;width:360px;height:500px;flex-shrink:0}
@@ -695,8 +704,8 @@ footer{
   .stat-badges{right:-10px}
 }
 @media(max-width:900px){
-  #hero{grid-template-columns:1fr;grid-template-rows:auto}
-  .hero-left{padding:32px 22px 0;align-items:center;text-align:center;order:2}
+  .hero-main{grid-template-columns:1fr;padding:0 22px}
+  .hero-left{padding:32px 0 0;align-items:center;text-align:center;order:2}
   .hero-bio{max-width:100%}
   .ticker-wrap{max-width:90vw}
   .hero-cta{justify-content:center}

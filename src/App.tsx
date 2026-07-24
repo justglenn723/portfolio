@@ -357,6 +357,7 @@ export default function App() {
 
       {/* ═══════════ HERO ═══════════ */}
       <section id="hero">
+        <div className="hero-main">
         <div className="hero-left">
           <div className="hero-tag">
             <span className="tag-dot" />
@@ -423,6 +424,7 @@ export default function App() {
             {GLENN_INFO.title}
             <strong>{GLENN_INFO.name}</strong>
           </div>
+        </div>
         </div>
 
         <div className="hero-bottom">
