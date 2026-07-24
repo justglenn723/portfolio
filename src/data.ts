@@ -16,7 +16,7 @@ export const GLENN_INFO = {
   bio: "Empowering agency owners, coaches, and SaaS businesses by building high-converting GoHighLevel funnel systems, complex multi-channel automated workflows, professional graphic designs, and high-retention video edits. I combine technical automation logic with modern visual aesthetics to grow digital businesses.",
   
   contactLinks: {
-    messenger: "https://m.me/glennjhune.polia", // Replace with your real Messenger link/username
+    messenger: "https://www.facebook.com/glenn.polia7?mibextid=ZbWKwL",
     whatsapp: "https://wa.me/639388589282",
     calendar: "https://calendar.app.google/TaT2imNBG9WA8jqz6",
     email: "glennpolia9@gmail.com"
