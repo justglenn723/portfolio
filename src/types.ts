@@ -34,6 +34,7 @@ export interface VideoProject {
   description: string;
   bullets: string[];
   gradient: string;
+  driveLink?: string;
 }
 
 export interface AutomationProject {

@@ -678,7 +678,7 @@ export default function App() {
             Video <em>Editing</em>
           </Reveal>
           <Reveal variant="reveal" as="p" className="section-sub">
-            Short-form and long-form edits built for retention and watch time.
+            Short-form ad edits built for retention, watch time, and paid social performance.
           </Reveal>
           <div className="portfolio-grid">
             {VIDEO_PROJECTS.map((vid) => (
@@ -688,10 +688,20 @@ export default function App() {
                 title={vid.title}
                 description={vid.description}
                 tags={vid.software}
+                linkUrl={vid.driveLink}
+                linkLabel="Watch Reels"
                 placeholderIcon={Video}
               />
             ))}
           </div>
+          {VIDEO_PROJECTS[0]?.driveLink && (
+            <div className="portfolio-more">
+              <a href={VIDEO_PROJECTS[0].driveLink} target="_blank" rel="noopener noreferrer" className="more-link">
+                Watch Full Video Reel Collection
+                <IconArrowRight />
+              </a>
+            </div>
+          )}
         </div>
       </section>
 

@@ -119,143 +119,79 @@ export const FUNNEL_PROJECTS: FunnelProject[] = [
   }
 ];
 
+export const PORTFOLIO_DRIVE_LINK = "https://drive.google.com/drive/folders/1WQZUEGr-cHT2FILEXKqoYzb835eEurs4?usp=sharing";
+
 export const GRAPHICS_PROJECTS: GraphicsProject[] = [
   {
-    id: "finance-ads",
-    title: "High-Converting Finance Ad Creatives",
+    id: "credit-brigade",
+    title: "Credit Brigade — Credit Repair Ad Creatives",
     category: "GRAPHICS DESIGN",
     software: ["Canva", "Social Media", "Branding"],
-    description: "Designed scroll-stopping visuals for financial services, focusing on trust, clarity, and strong call-to-actions to boost lead generation and client conversions.",
+    description: "Scroll-stopping ad creatives for Credit Brigade, a credit repair service — built around trust, clarity, and direct calls-to-action to drive lead generation.",
     details: [
-      "High-contrast layout pairing professional corporate tones with bright accent lines.",
-      "Engineered for rapid pattern-interruption on high-velocity social feeds.",
-      "Integrated dynamic text elements and trusted credential badges.",
-      "Strict alignment with financial services compliance and trust guidelines."
+      "Checklist-style value props (boost credit scores, achieve financial freedom) for fast scannability.",
+      "Consistent brand system (logo, navy/gold palette) applied across the ad set.",
+      "Direct contact info (phone, email, site) embedded for immediate response.",
+      "Quote-card and stat-driven variants tested alongside the checklist format."
     ],
-    gradient: "from-emerald-500/20 to-blue-500/10",
-    visualConcept: "Every financial decision should be driven by what you value.",
-    imageUrl: "https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?auto=format&fit=crop&w=600&q=80",
-    driveLink: "https://drive.google.com/drive/folders/1udsoxDFvqPYAIzjlGN88ZYb06xBAx7UJ?usp=sharing"
+    gradient: "from-blue-600/20 to-sky-500/10",
+    visualConcept: "The True Value of Credit Repair.",
+    imageUrl: "/assets/graphics/credit-brigade.png",
+    driveLink: PORTFOLIO_DRIVE_LINK
   },
   {
-    id: "movement-life-watch",
-    title: "Watch Visual Campaigns",
+    id: "eye-mazen-gummy",
+    title: "Zen Nutrients — Eye-Mazen Gummy Campaign",
     category: "GRAPHICS DESIGN",
-    software: ["Photoshop", "Ad Creative"],
-    description: "Produced high-end, detail-focused creatives that emphasize craftsmanship, elegance, and exclusivity to elevate brand perception and desirability.",
+    software: ["Canva", "Photoshop", "Product Ad"],
+    description: "A full ad creative set for The Eye-Mazen Gummy, a postbiotic eye-health supplement — covering hero claims, ingredient breakdowns, competitor comparisons, and lifestyle use-cases.",
     details: [
-      "Cinematic lighting overlays highlighting pristine product craftsmanship.",
-      "Elegant typography pairing high-fashion serif with clean neo-grotesque copy.",
-      "Responsive card containers optimized for vertical mobile formats.",
-      "Engineered specifically for luxury direct-to-consumer e-commerce brands."
+      "Bold headline creative built around the product's core claim (world's first postbiotic eye gummy).",
+      "Ingredient/benefit breakdown cards translating clinical claims into consumer-friendly copy.",
+      "Head-to-head competitor comparison table (Eye-Mazen vs. Brand A/B).",
+      "Lifestyle scenarios (screen fatigue, video calls) tying the product to everyday use."
     ],
-    gradient: "from-amber-500/20 to-orange-500/10",
-    visualConcept: "For Movement For Life — Wear it at the gym, office, or on the go.",
-    imageUrl: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=600&q=80",
-    driveLink: "https://drive.google.com/drive/folders/1udsoxDFvqPYAIzjlGN88ZYb06xBAx7UJ?usp=sharing"
+    gradient: "from-teal-500/20 to-orange-400/10",
+    visualConcept: "See better, perform better.",
+    imageUrl: "/assets/graphics/eye-mazen-gummy.png",
+    driveLink: PORTFOLIO_DRIVE_LINK
   },
   {
-    id: "dry-eyes-health",
-    title: "Engaging Health & Wellness Campaign Designs",
+    id: "7figure-builder",
+    title: "7Figure Builder — Real Estate Course Funnel Ads",
     category: "GRAPHICS DESIGN",
-    software: ["Canva", "Logo Design"],
-    description: "Developed clean, informative, and visually appealing creatives that communicate health benefits effectively while building credibility and audience trust.",
+    software: ["Canva", "Photoshop", "Ad Creative"],
+    description: "Bold, typography-driven ad creatives for 7Figure Builder, a real estate/home-building education brand — designed to interrupt the scroll and drive free starter-kit signups.",
     details: [
-      "High-impact medical warning symbols that draw immediate visual attention.",
-      "Warm, empathetic color palettes that reduce patient skepticism.",
-      "Bold headlines targeting pain-point solutions with visual hierarchies.",
-      "Optimized for local chiropractic, physiological, and clinical client acquisitions."
+      "High-contrast black/gold typographic hooks built for pattern interruption on social feeds.",
+      "Founder-story creative pairing a personal photo with a direct testimonial hook.",
+      "Consistent 'Download it, it's free' CTA across the ad set.",
+      "House/key iconography reinforcing the real-estate build niche."
     ],
-    gradient: "from-pink-500/20 to-rose-500/10",
-    visualConcept: "Making Your Dry Eyes a Thing of the Past.",
-    imageUrl: "https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?auto=format&fit=crop&w=600&q=80",
-    driveLink: "https://drive.google.com/drive/folders/1udsoxDFvqPYAIzjlGN88ZYb06xBAx7UJ?usp=sharing"
-  },
-  {
-    id: "cleaning-profits",
-    title: "Futuristic AI Branding & Ad Creatives",
-    category: "GRAPHICS DESIGN",
-    software: ["Photoshop", "Thumbnail"],
-    description: "Crafted sleek and innovative designs that reflect cutting-edge technology, making complex AI solutions visually appealing and easy to understand.",
-    details: [
-      "Rich, vibrant purple gradients highlighting autonomous technological interfaces.",
-      "Clean, high-impact badge arrays that increase user click-through rates.",
-      "Direct value proposition framing targeting local service company owners.",
-      "Integrated custom mockups showcasing client-facing dashboard systems."
-    ],
-    gradient: "from-purple-500/20 to-indigo-500/10",
-    visualConcept: "Double Your Cleaning Profits Without Working More.",
-    imageUrl: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=600&q=80",
-    driveLink: "https://drive.google.com/drive/folders/1udsoxDFvqPYAIzjlGN88ZYb06xBAx7UJ?usp=sharing"
-  },
-  {
-    id: "real-estate-scroll",
-    title: "Premium Real Estate Marketing Visuals",
-    category: "GRAPHICS DESIGN",
-    software: ["Canva", "Email Banner"],
-    description: "Created modern and elegant property graphics that highlight key selling points, helping listings stand out and attract qualified buyers.",
-    details: [
-      "Strategic headline layout framing built to disrupt traditional real estate feeds.",
-      "Modern architectural outline framing emphasizing structural sophistication.",
-      "High-contrast typography pairing displaying authoritative pricing values.",
-      "Responsive assets configured specifically for multi-channel email campaigns."
-    ],
-    gradient: "from-yellow-600/20 to-amber-600/10",
-    visualConcept: "You're Wasting Time Scrolling — Build Something Real.",
-    imageUrl: "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=600&q=80",
-    driveLink: "https://drive.google.com/drive/folders/1udsoxDFvqPYAIzjlGN88ZYb06xBAx7UJ?usp=sharing"
-  },
-  {
-    id: "graphic-sample-6",
-    title: "High-Converting Agency & Coaching Visuals",
-    category: "GRAPHICS DESIGN",
-    software: ["Photoshop", "Brand Kit"],
-    description: "High-retention graphics designed for elite agencies and online educators. Tailored layouts optimized for peak conversion rates and professional authority.",
-    details: [
-      "Abstract modern artwork creating a distinct, high-end editorial vibe.",
-      "Symmetry-based composition grid guiding the reader's eye naturally.",
-      "Minimalist margin spacing highlighting critical business branding.",
-      "Tailored for premium service providers looking to double booking rates."
-    ],
-    gradient: "from-blue-500/20 to-teal-500/10",
-    visualConcept: "Graphic Sample - Standardizing Elite Agency Materials.",
-    imageUrl: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=600&q=80",
-    driveLink: "https://drive.google.com/drive/folders/1udsoxDFvqPYAIzjlGN88ZYb06xBAx7UJ?usp=sharing"
+    gradient: "from-amber-600/20 to-yellow-500/10",
+    visualConcept: "You're wasting time scrolling — build something real.",
+    imageUrl: "/assets/graphics/7figure-builder.png",
+    driveLink: PORTFOLIO_DRIVE_LINK
   }
 ];
 
 export const VIDEO_PROJECTS: VideoProject[] = [
   {
-    id: "retention-shorts",
-    title: "High-Retention TikToks & Reels Collection",
-    duration: "30-60 Seconds",
+    id: "hook-body-ad-reels",
+    title: "Direct-Response Hook & Body Ad Reels",
+    duration: "15-45 Seconds",
     platform: "Instagram Reels & TikTok",
-    style: "Alex Hormozi / Fast-Paced Infotainment",
-    software: ["CapCut Pro", "Adobe Premiere Pro", "Audacity"],
-    description: "A series of high-performing short-form video content designed specifically to keep viewer attention. Features kinetic animated captions, punchy sound effects, zoom zooms, and strategic B-roll visual insertions.",
+    style: "UGC-Style Direct-Response Ads",
+    software: ["CapCut Pro", "Adobe Premiere Pro"],
+    description: "A batch of hook-and-body style short-form ad edits — multiple hook variations (talking-head openers) cut against shared body footage, built for fast A/B testing of paid social ad angles.",
     bullets: [
-      "Achieved average audience retention rates over 85% on 45-second videos.",
-      "Dynamic multi-colored kinetic captions with emojis highlighting critical terms.",
-      "Perfect audio leveling, blending background trending tracks with clear, crisp vocal tracks.",
-      "Strategic visual jokes, green-screen assets, and fast jump-cuts to hold visual interest."
+      "Multiple interchangeable hook openers edited to pair with the same body content for rapid ad testing.",
+      "Punchy, retention-focused pacing suited for cold-audience paid social placements.",
+      "Consistent captioning and pacing style across the full reel batch.",
+      "Delivered as a ready-to-launch set for direct upload to ad accounts."
     ],
-    gradient: "from-emerald-500/20 to-teal-500/10"
-  },
-  {
-    id: "longform-youtube",
-    title: "Business Explainer & Strategy YouTube Edits",
-    duration: "8-12 Minutes",
-    platform: "YouTube",
-    style: "Cinematic Documentary Explainer",
-    software: ["Premiere Pro", "After Effects", "Adobe Photoshop"],
-    description: "Long-form editorial edits focused on presenting complex business case studies. Integrates custom motion graphics, professional lower-thirds, smooth transitions, and multi-layered soundscapes.",
-    bullets: [
-      "Custom sound effects (whooshes, page-turns, ambient wind) matching graphic motion",
-      "Designed clickable, high-CTR thumbnail assets matching the video's aesthetic",
-      "Dynamic color grading maximizing warmth and visual clarity for speakers",
-      "Chapter marker templates and automated intro templates built for ease-of-use"
-    ],
-    gradient: "from-sky-500/20 to-blue-500/10"
+    gradient: "from-cyan-500/20 to-blue-500/10",
+    driveLink: PORTFOLIO_DRIVE_LINK
   }
 ];
 
