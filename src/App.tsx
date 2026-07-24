@@ -1,21 +1,5 @@
-import React, { useState } from "react";
-import {
-  MessageSquare,
-  PhoneCall,
-  Calendar,
-  MapPin,
-  ArrowUpRight,
-  Check,
-  ChevronDown,
-  Globe,
-  Palette,
-  Video,
-  Zap,
-  Mail,
-  Menu,
-  X,
-  Sparkles
-} from "lucide-react";
+import React, { useEffect, useRef, useState } from "react";
+import { Plus, Globe, Palette, Video, Zap, Users } from "lucide-react";
 import {
   GLENN_INFO,
   SKILL_GROUPS,
@@ -27,11 +11,63 @@ import {
   EDUCATION_INFO
 } from "./data";
 
+const { messenger, whatsapp, calendar, email } = GLENN_INFO.contactLinks;
+const whatsappDigits = whatsapp.replace(/\D/g, "");
+const phoneDisplay = "+" + whatsappDigits.replace(/(\d{2})(\d{3})(\d{3})(\d{4})/, "$1 $2 $3 $4");
+
+const TICKER_ITEMS = [
+  "GoHighLevel",
+  "Funnel Design",
+  "Closebot AI",
+  "Workflow Automation",
+  "Graphic Design",
+  "Video Editing",
+  "ClickUp"
+];
+
+const CHIPS = [
+  "GoHighLevel Specialist",
+  "Funnel & Web Design",
+  "Closebot AI Integration",
+  "Workflow Automation",
+  "Video Editing"
+];
+
+const INDUSTRIES = [
+  "Finance",
+  "Health & Wellness",
+  "Real Estate",
+  "Coaching & Agencies",
+  "Retail / E-commerce",
+  "Home Services"
+];
+
+const SERVICE_ICONS = [Zap, Palette, Video];
+
+const TOTAL_PROJECTS =
+  FUNNEL_PROJECTS.length + GRAPHICS_PROJECTS.length + VIDEO_PROJECTS.length + AUTOMATION_PROJECTS.length;
+
+const YEARS_EXPERIENCE = "2+";
+
+const ALL_TOOLS = Array.from(
+  new Set([
+    "GoHighLevel",
+    "ClickUp",
+    "Closebot AI",
+    "Twilio",
+    "Zapier",
+    "Stripe",
+    ...GRAPHICS_PROJECTS.flatMap((g) => g.software),
+    ...VIDEO_PROJECTS.flatMap((v) => v.software),
+    ...AUTOMATION_PROJECTS.flatMap((a) => a.software)
+  ])
+);
+
 const NAV_LINKS = [
   { href: "#about", label: "About" },
   { href: "#services", label: "Services" },
   { href: "#tools", label: "Tools" },
-  { href: "#portfolio", label: "Portfolio" },
+  { href: "#portfolio-funnels", label: "Projects" },
   { href: "#faq", label: "FAQ" },
   { href: "#contact", label: "Contact" }
 ];
@@ -59,542 +95,756 @@ const FAQS = [
   }
 ];
 
-const TAB_META = {
-  funnels: { label: "Funnels", icon: Globe, accent: "teal" },
-  graphics: { label: "Graphics", icon: Palette, accent: "amber" },
-  videos: { label: "Videos", icon: Video, accent: "purple" },
-  automations: { label: "Workflows", icon: Zap, accent: "blue" }
-} as const;
-
-type TabKey = keyof typeof TAB_META;
-
-const ACCENT_CLASSES: Record<string, { text: string; bg: string; border: string; ring: string }> = {
-  teal: { text: "text-teal-400", bg: "bg-teal-500/10", border: "border-teal-500/30", ring: "hover:border-teal-500/50" },
-  amber: { text: "text-amber-400", bg: "bg-amber-500/10", border: "border-amber-500/30", ring: "hover:border-amber-500/50" },
-  purple: { text: "text-purple-400", bg: "bg-purple-500/10", border: "border-purple-500/30", ring: "hover:border-purple-500/50" },
-  blue: { text: "text-blue-400", bg: "bg-blue-500/10", border: "border-blue-500/30", ring: "hover:border-blue-500/50" }
-};
-
-const ALL_TOOLS = Array.from(
-  new Set([
-    "GoHighLevel",
-    "ClickUp",
-    "Closebot AI",
-    "Twilio",
-    "Zapier",
-    "Stripe",
-    ...GRAPHICS_PROJECTS.flatMap((g) => g.software),
-    ...VIDEO_PROJECTS.flatMap((v) => v.software),
-    ...AUTOMATION_PROJECTS.flatMap((a) => a.software)
-  ])
-);
-
-function HeroPhoto() {
+function IconArrowRight() {
   return (
-    <div className="h-48 w-48 md:h-60 md:w-60 rounded-3xl overflow-hidden border border-amber-400/30 shadow-[0_8px_40px_rgba(251,191,36,0.15)]">
-      <img
-        src="/glenn-hero.jpg"
-        alt={GLENN_INFO.name}
-        className="h-full w-full object-cover"
-      />
-    </div>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <path d="M5 12h14M12 5l7 7-7 7" />
+    </svg>
   );
 }
 
-export default function App() {
-  const [mobileNavOpen, setMobileNavOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState<TabKey>("funnels");
-  const [selectedFunnel, setSelectedFunnel] = useState<string>(FUNNEL_PROJECTS[0].id);
-  const [selectedVideo, setSelectedVideo] = useState<string>(VIDEO_PROJECTS[0].id);
-  const [selectedAutomation, setSelectedAutomation] = useState<string>(AUTOMATION_PROJECTS[0].id);
-  const [openFaq, setOpenFaq] = useState<number | null>(0);
+function IconExternal() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+      <polyline points="15 3 21 3 21 9" />
+      <line x1="10" y1="14" x2="21" y2="3" />
+    </svg>
+  );
+}
 
-  const { messenger, whatsapp, calendar, email } = GLENN_INFO.contactLinks;
+function IconPhone() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.27h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.91a16 16 0 0 0 6.18 6.18l.95-.95a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z" />
+    </svg>
+  );
+}
+
+function IconWhatsapp() {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor">
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z" />
+    </svg>
+  );
+}
+
+function IconMessenger() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
+    </svg>
+  );
+}
+
+/* ─────────────────────────────────────
+   Reveal wrapper — mirrors the reference
+   site's IntersectionObserver behavior
+───────────────────────────────────── */
+function Reveal({
+  as: Tag = "div",
+  variant = "reveal",
+  className = "",
+  children,
+  ...rest
+}: {
+  as?: any;
+  variant?: "reveal" | "reveal-left" | "reveal-right";
+  className?: string;
+  children: React.ReactNode;
+  [key: string]: any;
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("visible");
+            obs.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.12 }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
 
   return (
-    <div className="min-h-screen bg-[#0a0e17] text-[#e4e4e7] font-sans selection:bg-amber-400/20 selection:text-white overflow-x-hidden antialiased">
+    <Tag ref={ref} className={`${variant} ${className}`} {...rest}>
+      {children}
+    </Tag>
+  );
+}
 
-      {/* NAV */}
-      <header className="sticky top-0 z-50 border-b border-white/5 bg-[#0a0e17]/90 backdrop-blur-md">
-        <div className="max-w-6xl mx-auto px-6 md:px-10 h-20 flex items-center justify-between">
-          <a href="#top" className="flex items-center gap-2.5">
-            <div className="h-2 w-2 rounded-full bg-amber-400 shadow-[0_0_10px_rgba(251,191,36,0.6)]" />
-            <span className="text-sm font-semibold tracking-wide text-white font-display">
-              {GLENN_INFO.name}
-            </span>
-          </a>
+interface ProjectCardProps {
+  category: string;
+  title: string;
+  description: string;
+  tags: string[];
+  imageUrl?: string;
+  linkUrl?: string;
+  linkLabel?: string;
+  placeholderIcon: any;
+}
 
-          <nav className="hidden md:flex items-center gap-8">
-            {NAV_LINKS.map((link) => (
-              <a
-                key={link.href}
-                href={link.href}
-                className="text-xs uppercase tracking-widest text-zinc-400 hover:text-amber-400 transition-colors"
-              >
-                {link.label}
-              </a>
-            ))}
-          </nav>
-
-          <div className="hidden md:block">
-            <a
-              href={calendar}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 bg-amber-400/10 hover:bg-amber-400/20 border border-amber-400/30 text-amber-300 px-4 py-2 rounded-xl text-xs font-semibold tracking-wide transition-all active:scale-[0.98]"
-            >
-              <Calendar className="h-3.5 w-3.5" />
-              Book a Call
-            </a>
+const ProjectCard: React.FC<ProjectCardProps> = ({
+  category,
+  title,
+  description,
+  tags,
+  imageUrl,
+  linkUrl,
+  linkLabel,
+  placeholderIcon: PlaceholderIcon
+}) => {
+  return (
+    <Reveal className="project-card">
+      <div className="project-thumb">
+        {imageUrl ? (
+          <img src={imageUrl} alt={title} referrerPolicy="no-referrer" />
+        ) : (
+          <div className="project-thumb-placeholder">
+            <PlaceholderIcon />
           </div>
-
-          <button
-            className="md:hidden text-zinc-300"
-            onClick={() => setMobileNavOpen((v: boolean) => !v)}
-            aria-label="Toggle navigation"
-          >
-            {mobileNavOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-          </button>
-        </div>
-
-        {mobileNavOpen && (
-          <div className="md:hidden border-t border-white/5 px-6 py-4 flex flex-col gap-4 bg-[#0a0e17]">
-            {NAV_LINKS.map((link) => (
-              <a
-                key={link.href}
-                href={link.href}
-                onClick={() => setMobileNavOpen(false)}
-                className="text-sm text-zinc-300 hover:text-amber-400"
-              >
-                {link.label}
-              </a>
-            ))}
-            <a
-              href={calendar}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-2 flex items-center justify-center gap-2 bg-amber-400/10 border border-amber-400/30 text-amber-300 px-4 py-2.5 rounded-xl text-xs font-semibold"
-            >
-              <Calendar className="h-3.5 w-3.5" />
-              Book a Call
+        )}
+        {linkUrl && (
+          <div className="project-thumb-overlay">
+            <a href={linkUrl} target="_blank" rel="noopener noreferrer" className="project-view-btn">
+              {linkLabel || "View Live"}
+              <IconExternal />
             </a>
           </div>
         )}
-      </header>
-
-      {/* HERO */}
-      <section id="top" className="max-w-6xl mx-auto px-6 md:px-10 py-20 md:py-28 flex flex-col items-center text-center gap-8">
-        <span className="flex items-center gap-2 text-[11px] uppercase tracking-[0.3em] text-amber-400/80 font-mono">
-          <MapPin className="h-3 w-3" />
-          {GLENN_INFO.location} &bull; Remote Available
-        </span>
-
-        <h1 className="text-4xl md:text-6xl font-display font-semibold text-white leading-tight max-w-3xl">
-          I Help Agencies &amp; Coaches{" "}
-          <span className="text-amber-400">Scale With Automation</span>
-        </h1>
-
-        <p className="text-sm md:text-base text-zinc-400 leading-relaxed font-light max-w-2xl">
-          {GLENN_INFO.bio}
-        </p>
-
-        <div className="flex flex-col sm:flex-row items-center gap-3">
-          <a
-            href={calendar}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-2 bg-amber-400 hover:bg-amber-300 text-[#0a0e17] px-6 py-3 rounded-xl text-sm font-semibold transition-all active:scale-[0.98]"
-          >
-            <Calendar className="h-4 w-4" />
-            Book a Strategy Call
-          </a>
-          <a
-            href={whatsapp}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-2 bg-white/5 hover:bg-white/10 border border-white/10 text-white px-6 py-3 rounded-xl text-sm font-semibold transition-all active:scale-[0.98]"
-          >
-            <PhoneCall className="h-4 w-4" />
-            Message on WhatsApp
-          </a>
+      </div>
+      <div className="project-body">
+        <div className="project-cat-tag">
+          <span className="project-cat-dot" />
+          {category}
         </div>
-
-        <HeroPhoto />
-      </section>
-
-      {/* ABOUT */}
-      <section id="about" className="border-t border-white/5">
-        <div className="max-w-6xl mx-auto px-6 md:px-10 py-16 md:py-20 grid grid-cols-1 md:grid-cols-3 gap-10">
-          <div>
-            <span className="text-[10px] uppercase tracking-[0.3em] text-amber-400/80 font-mono block mb-2">About</span>
-            <h2 className="text-2xl font-display font-semibold text-white">{GLENN_INFO.title}</h2>
-            <p className="text-xs text-zinc-500 mt-1">{GLENN_INFO.subtitle}</p>
-          </div>
-          <div className="md:col-span-2 space-y-6">
-            <p className="text-sm text-zinc-400 leading-relaxed font-light">{GLENN_INFO.bio}</p>
-            <div className="border-t border-white/5 pt-6">
-              <span className="text-[10px] uppercase tracking-[0.2em] text-white/30 mb-4 font-mono block">Professional Timeline</span>
-              <div className="space-y-6 pl-4 border-l border-white/10">
-                {EXPERIENCES.map((exp, idx) => (
-                  <div key={idx} className="relative space-y-1.5">
-                    <div className="absolute -left-[21px] top-1.5 h-2.5 w-2.5 rounded-full bg-[#0a0e17] border border-amber-400/60" />
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
-                      <h4 className="text-sm font-semibold text-white">
-                        {exp.role} <span className="text-zinc-500 font-normal">&mdash; {exp.company}</span>
-                      </h4>
-                      <span className="text-[10px] font-mono text-zinc-500">{exp.period}</span>
-                    </div>
-                    <ul className="space-y-1 pl-4 list-disc text-xs text-zinc-400 font-light">
-                      {exp.bullets.map((b, bIdx) => (
-                        <li key={bIdx}>{b}</li>
-                      ))}
-                    </ul>
-                  </div>
-                ))}
-              </div>
-            </div>
-            <div className="border-t border-white/5 pt-6">
-              <span className="text-[10px] uppercase tracking-[0.2em] text-white/30 mb-2 font-mono block">Education</span>
-              <div className="bg-white/[0.02] border border-white/5 p-4 rounded-xl space-y-1.5">
-                <div className="flex items-start justify-between gap-2">
-                  <h4 className="text-sm font-semibold text-white">{EDUCATION_INFO.degree}</h4>
-                  <span className="text-[10px] font-mono text-amber-400 shrink-0">{EDUCATION_INFO.period}</span>
-                </div>
-                <p className="text-xs text-zinc-500">{EDUCATION_INFO.school}</p>
-                <ul className="space-y-1 pl-4 list-disc text-xs text-zinc-400 font-light">
-                  {EDUCATION_INFO.bullets?.map((bullet, bIdx) => (
-                    <li key={bIdx}>{bullet}</li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* SERVICES */}
-      <section id="services" className="border-t border-white/5 bg-white/[0.015]">
-        <div className="max-w-6xl mx-auto px-6 md:px-10 py-16 md:py-20">
-          <div className="text-center mb-12">
-            <span className="text-[10px] uppercase tracking-[0.3em] text-amber-400/80 font-mono block mb-2">Services</span>
-            <h2 className="text-2xl md:text-3xl font-display font-semibold text-white">What I Bring to Your Business</h2>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {SKILL_GROUPS.map((group, idx) => (
-              <div key={idx} className="bg-[#0d1119] border border-white/5 rounded-2xl p-6 space-y-4 hover:border-amber-400/20 transition-colors">
-                <span className="text-sm font-semibold text-amber-400 block">{group.category}</span>
-                <ul className="space-y-2">
-                  {group.items.map((item, sIdx) => (
-                    <li key={sIdx} className="flex items-start gap-2 text-xs text-zinc-400 font-light">
-                      <Check className="h-3.5 w-3.5 text-amber-400/70 shrink-0 mt-0.5" />
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* TOOLS */}
-      <section id="tools" className="border-t border-white/5">
-        <div className="max-w-6xl mx-auto px-6 md:px-10 py-16 md:py-20">
-          <div className="text-center mb-10">
-            <span className="text-[10px] uppercase tracking-[0.3em] text-amber-400/80 font-mono block mb-2">Tools</span>
-            <h2 className="text-2xl md:text-3xl font-display font-semibold text-white">Platforms &amp; Software I Work In</h2>
-          </div>
-          <div className="flex flex-wrap justify-center gap-2.5">
-            {ALL_TOOLS.map((tool, idx) => (
-              <span
-                key={idx}
-                className="text-xs font-mono text-zinc-300 bg-white/[0.03] border border-white/10 px-3.5 py-2 rounded-lg"
-              >
-                {tool}
+        <div className="project-title">{title}</div>
+        <p className="project-desc">{description}</p>
+        {tags.length > 0 && (
+          <div className="project-tags">
+            {tags.map((tag, idx) => (
+              <span key={idx} className="project-tag">
+                {tag}
               </span>
             ))}
           </div>
+        )}
+      </div>
+    </Reveal>
+  );
+};
+
+export default function App() {
+  const [scrolled, setScrolled] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const cursorRef = useRef<HTMLDivElement>(null);
+  const ringRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 40);
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  useEffect(() => {
+    if (window.matchMedia("(hover: none), (pointer: coarse)").matches) return;
+    const cursor = cursorRef.current;
+    const ring = ringRef.current;
+    if (!cursor || !ring) return;
+
+    let mx = 0, my = 0, rx = 0, ry = 0;
+    let raf = 0;
+
+    const onMove = (e: MouseEvent) => {
+      mx = e.clientX;
+      my = e.clientY;
+      cursor.style.left = mx + "px";
+      cursor.style.top = my + "px";
+    };
+    document.addEventListener("mousemove", onMove);
+
+    const animate = () => {
+      rx += (mx - rx) * 0.12;
+      ry += (my - ry) * 0.12;
+      ring.style.left = rx + "px";
+      ring.style.top = ry + "px";
+      raf = requestAnimationFrame(animate);
+    };
+    raf = requestAnimationFrame(animate);
+
+    const grow = () => {
+      cursor.style.width = "18px";
+      cursor.style.height = "18px";
+      ring.style.width = "52px";
+      ring.style.height = "52px";
+    };
+    const shrink = () => {
+      cursor.style.width = "10px";
+      cursor.style.height = "10px";
+      ring.style.width = "36px";
+      ring.style.height = "36px";
+    };
+    const onOver = (e: MouseEvent) => {
+      if ((e.target as HTMLElement).closest("a,button,.faq-q,.service-card,.tool-card,.project-card")) grow();
+    };
+    const onOut = (e: MouseEvent) => {
+      if ((e.target as HTMLElement).closest("a,button,.faq-q,.service-card,.tool-card,.project-card")) shrink();
+    };
+    document.addEventListener("mouseover", onOver);
+    document.addEventListener("mouseout", onOut);
+
+    return () => {
+      document.removeEventListener("mousemove", onMove);
+      document.removeEventListener("mouseover", onOver);
+      document.removeEventListener("mouseout", onOut);
+      cancelAnimationFrame(raf);
+    };
+  }, []);
+
+  const closeMobile = () => setMobileOpen(false);
+
+  return (
+    <>
+      <div className="cursor" ref={cursorRef} />
+      <div className="cursor-ring" ref={ringRef} />
+
+      <div className="blob b1" />
+      <div className="blob b2" />
+      <div className="blob b3" />
+
+      {mobileOpen && (
+        <div className="mobile-menu open">
+          <button className="mobile-close" onClick={closeMobile} aria-label="Close menu">
+            ✕
+          </button>
+          {NAV_LINKS.map((link) => (
+            <a key={link.href} href={link.href} onClick={closeMobile}>
+              {link.label}
+            </a>
+          ))}
+        </div>
+      )}
+
+      <nav id="navbar" className={scrolled ? "scrolled" : ""}>
+        <a href="#hero" className="nav-logo">
+          Glenn<span>.</span>Polia
+        </a>
+        <ul className="nav-links">
+          {NAV_LINKS.map((link) => (
+            <li key={link.href}>
+              <a href={link.href}>{link.label}</a>
+            </li>
+          ))}
+        </ul>
+        <a href={calendar} target="_blank" rel="noopener noreferrer" className="nav-cta">
+          Book A Call
+        </a>
+        <button className="hamburger" onClick={() => setMobileOpen(true)} aria-label="Open menu">
+          <span />
+          <span />
+          <span />
+        </button>
+      </nav>
+
+      {/* ═══════════ HERO ═══════════ */}
+      <section id="hero">
+        <div className="hero-left">
+          <div className="hero-tag">
+            <span className="tag-dot" />
+            Open to New Projects
+          </div>
+          <h1 className="hero-title">
+            I Help Agencies &amp; Coaches
+            <br />
+            <em>Scale</em> With
+            <br />
+            <strong>Automation.</strong>
+          </h1>
+          <p className="hero-bio">{GLENN_INFO.bio}</p>
+          <div className="ticker-wrap">
+            <div className="ticker">
+              {[...TICKER_ITEMS, ...TICKER_ITEMS].map((item, idx) => (
+                <React.Fragment key={idx}>
+                  <span>{item}</span>
+                  <span className="sep">&middot;</span>
+                </React.Fragment>
+              ))}
+            </div>
+          </div>
+          <div className="hero-cta">
+            <a href={calendar} target="_blank" rel="noopener noreferrer" className="btn btn-primary">
+              Book A Call
+              <IconArrowRight />
+            </a>
+            <a href={`tel:+${whatsappDigits}`} className="btn btn-ghost">
+              <IconPhone />
+              Call Me
+            </a>
+          </div>
+        </div>
+
+        <div className="hero-center">
+          <div className="photo-wrap">
+            <img className="photo-img" src="/glenn-hero.jpg" alt={GLENN_INFO.name} />
+            <div className="photo-fade" />
+            <div className="photo-glow" />
+          </div>
+          <div className="name-badge">
+            {GLENN_INFO.title}
+            <strong>{GLENN_INFO.name}</strong>
+          </div>
+        </div>
+
+        <div className="hero-right">
+          <div className="chip-stack">
+            {CHIPS.map((chip, idx) => (
+              <span key={idx} className="chip">
+                {chip}
+              </span>
+            ))}
+          </div>
+          <div className="social-stack">
+            <a href={messenger} target="_blank" rel="noopener noreferrer" className="soc-icon" title="Messenger">
+              <IconMessenger />
+            </a>
+            <a href={whatsapp} target="_blank" rel="noopener noreferrer" className="soc-icon" title="WhatsApp">
+              <IconWhatsapp />
+            </a>
+          </div>
+          <span className="soc-label">Connect</span>
+          <a href={`tel:+${whatsappDigits}`} className="contact-pill">
+            <IconPhone />
+            {phoneDisplay}
+          </a>
+        </div>
+
+        <div className="hero-bottom">
+          <div className="scroll-hint">
+            <div className="scroll-line" />
+            Explore Portfolio
+          </div>
+          <div className="avail">
+            <div className="avail-dot" />
+            Available for new projects
+          </div>
         </div>
       </section>
 
-      {/* PORTFOLIO */}
-      <section id="portfolio" className="border-t border-white/5 bg-white/[0.015]">
-        <div className="max-w-6xl mx-auto px-6 md:px-10 py-16 md:py-20">
-          <div className="text-center mb-10">
-            <span className="text-[10px] uppercase tracking-[0.3em] text-amber-400/80 font-mono block mb-2">Portfolio</span>
-            <h2 className="text-2xl md:text-3xl font-display font-semibold text-white">Recent Work</h2>
+      {/* ═══════════ ABOUT ═══════════ */}
+      <section id="about">
+        <div className="divider" />
+        <div className="section-inner">
+          <div className="section-label">About Me</div>
+          <div className="about-grid">
+            <Reveal variant="reveal-left" className="about-photo-col">
+              <div className="about-img-wrap">
+                <img src="/glenn-hero.jpg" alt={GLENN_INFO.name} />
+                <div className="about-img-overlay" />
+                <div className="about-img-border" />
+                <div className="about-corner tl" />
+                <div className="about-corner tr" />
+                <div className="about-corner bl" />
+                <div className="about-corner br" />
+              </div>
+              <div className="stat-badges">
+                <div className="stat-badge">
+                  <div className="stat-badge-num">{YEARS_EXPERIENCE}</div>
+                  <div className="stat-badge-label">Years Exp.</div>
+                </div>
+                <div className="stat-badge">
+                  <div className="stat-badge-num">{TOTAL_PROJECTS}+</div>
+                  <div className="stat-badge-label">Projects</div>
+                </div>
+              </div>
+            </Reveal>
+            <Reveal variant="reveal-right" className="about-text-col">
+              <div className="section-label">I'm Glenn</div>
+              <h2 className="about-heading">
+                A {GLENN_INFO.title} Who <em>Gets Results.</em>
+              </h2>
+              <p className="about-body">{GLENN_INFO.bio}</p>
+              <div>
+                <div className="section-label" style={{ marginBottom: 12 }}>
+                  Industries I've Worked With
+                </div>
+                <div className="industries">
+                  {INDUSTRIES.map((ind, idx) => (
+                    <span key={idx} className="ind-tag">
+                      {ind}
+                    </span>
+                  ))}
+                </div>
+              </div>
+              <div className="hero-cta">
+                <a href={calendar} target="_blank" rel="noopener noreferrer" className="btn btn-primary">
+                  Book A Call
+                  <IconArrowRight />
+                </a>
+              </div>
+            </Reveal>
           </div>
+        </div>
+      </section>
 
-          <div className="flex flex-wrap justify-center gap-2 mb-12">
-            {(Object.keys(TAB_META) as TabKey[]).map((key) => {
-              const meta = TAB_META[key];
-              const Icon = meta.icon;
-              const accent = ACCENT_CLASSES[meta.accent];
-              const isActive = activeTab === key;
+      {/* ═══════════ EXPERIENCE ═══════════ */}
+      <section id="experience" style={{ background: "var(--bg2)" }}>
+        <div className="divider" />
+        <div className="section-inner">
+          <Reveal variant="reveal" className="section-label">
+            Experience
+          </Reveal>
+          <Reveal variant="reveal" as="h2" className="section-title">
+            Professional <em>Timeline</em>
+          </Reveal>
+          <div style={{ marginTop: 52, display: "flex", flexDirection: "column", gap: 32, maxWidth: 720 }}>
+            {EXPERIENCES.map((exp, idx) => (
+              <Reveal key={idx} variant="reveal" style={{ borderLeft: "1px solid var(--border)", paddingLeft: 24 }}>
+                <div style={{ display: "flex", justifyContent: "space-between", gap: 12, flexWrap: "wrap" }}>
+                  <span style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: "1.15rem", fontWeight: 600 }}>
+                    {exp.role} <span style={{ color: "var(--muted)", fontWeight: 400 }}>&mdash; {exp.company}</span>
+                  </span>
+                  <span style={{ fontSize: ".72rem", color: "var(--dimmed)", letterSpacing: ".08em" }}>{exp.period}</span>
+                </div>
+                <ul style={{ marginTop: 10, paddingLeft: 18, display: "flex", flexDirection: "column", gap: 6 }}>
+                  {exp.bullets.map((b, bIdx) => (
+                    <li key={bIdx} style={{ fontSize: ".84rem", color: "var(--muted)", lineHeight: 1.7, fontWeight: 300 }}>
+                      {b}
+                    </li>
+                  ))}
+                </ul>
+              </Reveal>
+            ))}
+            <Reveal variant="reveal" style={{ borderLeft: "1px solid var(--border)", paddingLeft: 24 }}>
+              <div style={{ display: "flex", justifyContent: "space-between", gap: 12, flexWrap: "wrap" }}>
+                <span style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: "1.15rem", fontWeight: 600 }}>
+                  {EDUCATION_INFO.degree}
+                </span>
+                <span style={{ fontSize: ".72rem", color: "var(--dimmed)", letterSpacing: ".08em" }}>{EDUCATION_INFO.period}</span>
+              </div>
+              <p style={{ fontSize: ".84rem", color: "var(--muted)", marginTop: 6 }}>{EDUCATION_INFO.school}</p>
+              <ul style={{ marginTop: 10, paddingLeft: 18, display: "flex", flexDirection: "column", gap: 6 }}>
+                {EDUCATION_INFO.bullets?.map((b, idx) => (
+                  <li key={idx} style={{ fontSize: ".84rem", color: "var(--muted)", lineHeight: 1.7, fontWeight: 300 }}>
+                    {b}
+                  </li>
+                ))}
+              </ul>
+            </Reveal>
+          </div>
+        </div>
+      </section>
+
+      {/* ═══════════ SERVICES ═══════════ */}
+      <section id="services">
+        <div className="divider" />
+        <div className="section-inner">
+          <Reveal variant="reveal" className="section-label">
+            My Services
+          </Reveal>
+          <Reveal variant="reveal" as="h2" className="section-title">
+            What I Can Do <em>For You</em>
+          </Reveal>
+          <Reveal variant="reveal" as="p" className="section-sub">
+            A focused set of GoHighLevel, automation, and creative services built to help agencies and coaches scale.
+          </Reveal>
+          <div className="services-grid">
+            {SKILL_GROUPS.map((group, idx) => {
+              const Icon = SERVICE_ICONS[idx % SERVICE_ICONS.length];
               return (
-                <button
-                  key={key}
-                  onClick={() => setActiveTab(key)}
-                  className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold tracking-wide transition-all border ${
-                    isActive ? `${accent.bg} ${accent.text} ${accent.border}` : "text-zinc-500 border-transparent hover:text-zinc-300"
-                  }`}
-                >
-                  <Icon className="h-3.5 w-3.5" />
-                  {meta.label}
-                </button>
+                <Reveal key={idx} variant="reveal" className="service-card">
+                  <div className="service-num">{String(idx + 1).padStart(2, "0")}</div>
+                  <div className="service-icon">
+                    <Icon />
+                  </div>
+                  <div className="service-name">{group.category}</div>
+                  <p className="service-desc">{group.items.join(" • ")}</p>
+                </Reveal>
               );
             })}
           </div>
+        </div>
+      </section>
 
-          {/* FUNNELS */}
-          {activeTab === "funnels" && (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {FUNNEL_PROJECTS.map((fun) => (
-                <div
-                  key={fun.id}
-                  onClick={() => setSelectedFunnel(fun.id === selectedFunnel ? "" : fun.id)}
-                  className={`cursor-pointer bg-[#0d1119] border rounded-2xl overflow-hidden flex flex-col transition-all ${
-                    selectedFunnel === fun.id ? "border-teal-500/40" : "border-white/5 hover:border-white/15"
-                  }`}
-                >
-                  <div className={`aspect-[16/10] bg-gradient-to-br ${fun.gradient} flex items-center justify-center border-b border-white/5`}>
-                    <Globe className="h-10 w-10 text-teal-400/60" />
-                  </div>
-                  <div className="p-5 space-y-2">
-                    <span className="text-[10px] font-mono text-teal-400 uppercase tracking-widest">{fun.platform}</span>
-                    <h3 className="text-sm font-semibold text-white">{fun.title}</h3>
-                    <p className="text-xs text-zinc-500">{fun.niche}</p>
-                    {selectedFunnel === fun.id && (
-                      <div className="pt-3 space-y-3 border-t border-white/5 mt-3">
-                        <p className="text-xs text-zinc-400 font-light leading-relaxed">{fun.description}</p>
-                        {fun.features.length > 0 && (
-                          <ul className="space-y-1.5">
-                            {fun.features.map((feat, idx) => (
-                              <li key={idx} className="flex items-start gap-2 text-[11px] text-zinc-400 font-light">
-                                <Check className="h-3 w-3 text-teal-400 shrink-0 mt-0.5" />
-                                {feat}
-                              </li>
-                            ))}
-                          </ul>
-                        )}
-                        {fun.liveUrl && (
-                          <a
-                            href={fun.liveUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            onClick={(e) => e.stopPropagation()}
-                            className="inline-flex items-center gap-1.5 bg-teal-500/10 hover:bg-teal-500/20 border border-teal-500/30 text-teal-400 text-[11px] font-semibold px-3.5 py-2 rounded-lg transition"
-                          >
-                            View Live Funnel
-                            <ArrowUpRight className="h-3.5 w-3.5" />
-                          </a>
-                        )}
-                      </div>
-                    )}
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
+      {/* ═══════════ TOOLS ═══════════ */}
+      <section id="tools">
+        <div className="divider" />
+        <div className="section-inner">
+          <Reveal variant="reveal" className="section-label">
+            Digital Tools
+          </Reveal>
+          <Reveal variant="reveal" as="h2" className="section-title">
+            My <em>Tech Stack</em>
+          </Reveal>
+          <Reveal variant="reveal" as="p" className="section-sub">
+            Platforms and software I use daily to build, automate, and ship client work.
+          </Reveal>
+          <div className="tools-grid">
+            {ALL_TOOLS.map((tool, idx) => (
+              <Reveal key={idx} variant="reveal" className="tool-card">
+                <div className="tool-icon">{tool[0]}</div>
+                <div className="tool-name">{tool}</div>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
 
-          {/* GRAPHICS */}
-          {activeTab === "graphics" && (
-            <div className="space-y-8">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {GRAPHICS_PROJECTS.map((gph) => (
-                  <div
-                    key={gph.id}
-                    className="bg-[#0d1119] border border-white/5 rounded-2xl overflow-hidden flex flex-col group hover:border-amber-500/20 transition-all"
-                  >
-                    <div className="aspect-[4/3] w-full relative overflow-hidden bg-zinc-950 border-b border-white/5">
-                      <img
-                        src={gph.imageUrl}
-                        alt={gph.title}
-                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                        referrerPolicy="no-referrer"
-                      />
-                    </div>
-                    <div className="p-5 space-y-2 flex-1 flex flex-col justify-between">
-                      <div className="space-y-1.5">
-                        <span className="text-[10px] font-mono tracking-widest text-amber-400 uppercase">{gph.category}</span>
-                        <h3 className="text-sm font-semibold text-white">{gph.title}</h3>
-                        <p className="text-xs text-zinc-400 font-light leading-relaxed">{gph.description}</p>
-                      </div>
-                      <div className="flex flex-wrap gap-1.5 pt-2">
-                        {gph.software.map((sw, idx) => (
-                          <span key={idx} className="text-[10px] font-mono text-zinc-500 bg-white/[0.03] px-2 py-0.5 rounded border border-white/5">
-                            {sw}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
+      {/* ═══════════ PORTFOLIO — FUNNELS ═══════════ */}
+      <section id="portfolio-funnels" style={{ background: "var(--bg2)" }}>
+        <div className="divider" />
+        <div className="section-inner">
+          <Reveal variant="reveal" className="section-label">
+            Portfolio
+          </Reveal>
+          <Reveal variant="reveal" as="h2" className="section-title">
+            GoHighLevel <em>Funnels</em>
+          </Reveal>
+          <Reveal variant="reveal" as="p" className="section-sub">
+            Live funnel builds — click through to view each one in action.
+          </Reveal>
+          <div className="portfolio-grid">
+            {FUNNEL_PROJECTS.map((fun) => (
+              <ProjectCard
+                key={fun.id}
+                category={fun.type}
+                title={fun.title}
+                description={fun.description}
+                tags={[fun.platform]}
+                linkUrl={fun.liveUrl}
+                linkLabel="View Live"
+                placeholderIcon={Globe}
+              />
+            ))}
+          </div>
+        </div>
+      </section>
 
-          {/* VIDEOS */}
-          {activeTab === "videos" && (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {VIDEO_PROJECTS.map((vid) => (
-                <div
-                  key={vid.id}
-                  onClick={() => setSelectedVideo(vid.id === selectedVideo ? "" : vid.id)}
-                  className={`cursor-pointer bg-[#0d1119] border rounded-2xl overflow-hidden flex flex-col transition-all ${
-                    selectedVideo === vid.id ? "border-purple-500/40" : "border-white/5 hover:border-white/15"
-                  }`}
-                >
-                  <div className={`aspect-[16/9] bg-gradient-to-br ${vid.gradient} flex items-center justify-center border-b border-white/5`}>
-                    <Video className="h-10 w-10 text-purple-400/60" />
-                  </div>
-                  <div className="p-5 space-y-2">
-                    <span className="text-[10px] font-mono text-purple-400 uppercase tracking-widest">{vid.duration} &bull; {vid.platform}</span>
-                    <h3 className="text-sm font-semibold text-white">{vid.title}</h3>
-                    <p className="text-xs text-zinc-500">{vid.style}</p>
-                    {selectedVideo === vid.id && (
-                      <div className="pt-3 space-y-3 border-t border-white/5 mt-3">
-                        <p className="text-xs text-zinc-400 font-light leading-relaxed">{vid.description}</p>
-                        <ul className="space-y-1.5">
-                          {vid.bullets.map((b, idx) => (
-                            <li key={idx} className="flex items-start gap-2 text-[11px] text-zinc-400 font-light">
-                              <Check className="h-3 w-3 text-purple-400 shrink-0 mt-0.5" />
-                              {b}
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-
-          {/* WORKFLOWS */}
-          {activeTab === "automations" && (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {AUTOMATION_PROJECTS.map((aut) => (
-                <div
-                  key={aut.id}
-                  onClick={() => setSelectedAutomation(aut.id === selectedAutomation ? "" : aut.id)}
-                  className={`cursor-pointer bg-[#0d1119] border rounded-2xl overflow-hidden flex flex-col transition-all ${
-                    selectedAutomation === aut.id ? "border-blue-500/40" : "border-white/5 hover:border-white/15"
-                  }`}
-                >
-                  <div className="aspect-[16/9] bg-gradient-to-br from-blue-500/20 to-indigo-500/10 flex items-center justify-center border-b border-white/5">
-                    <Zap className="h-10 w-10 text-blue-400/60" />
-                  </div>
-                  <div className="p-5 space-y-2">
-                    <span className="text-[10px] font-mono text-blue-400 uppercase tracking-widest">Trigger: {aut.trigger}</span>
-                    <h3 className="text-sm font-semibold text-white">{aut.title}</h3>
-                    {selectedAutomation === aut.id && (
-                      <div className="pt-3 space-y-3 border-t border-white/5 mt-3">
-                        <p className="text-xs text-zinc-400 font-light leading-relaxed">{aut.description}</p>
-                        <div className="bg-emerald-950/10 border border-emerald-500/20 p-3 rounded-xl">
-                          <span className="text-[9px] font-mono text-emerald-400 uppercase tracking-wider block font-semibold mb-1">Business Impact</span>
-                          <p className="text-[11px] text-zinc-300 font-light">{aut.businessImpact}</p>
-                        </div>
-                        <ul className="space-y-1.5">
-                          {aut.actions.map((act, idx) => (
-                            <li key={idx} className="flex items-start gap-2 text-[11px] text-zinc-400 font-light">
-                              <Check className="h-3 w-3 text-blue-400 shrink-0 mt-0.5" />
-                              {act}
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              ))}
+      {/* ═══════════ PORTFOLIO — GRAPHICS ═══════════ */}
+      <section id="portfolio-graphics">
+        <div className="divider" />
+        <div className="section-inner">
+          <Reveal variant="reveal" className="section-label">
+            Portfolio
+          </Reveal>
+          <Reveal variant="reveal" as="h2" className="section-title">
+            Graphics &amp; <em>Design</em>
+          </Reveal>
+          <Reveal variant="reveal" as="p" className="section-sub">
+            Ad creatives and branding work across finance, retail, health, and real estate.
+          </Reveal>
+          <div className="portfolio-grid">
+            {GRAPHICS_PROJECTS.map((gph) => (
+              <ProjectCard
+                key={gph.id}
+                category={gph.category}
+                title={gph.title}
+                description={gph.description}
+                tags={gph.software}
+                imageUrl={gph.imageUrl}
+                linkUrl={gph.driveLink}
+                linkLabel="View Full Size"
+                placeholderIcon={Palette}
+              />
+            ))}
+          </div>
+          {GRAPHICS_PROJECTS[0]?.driveLink && (
+            <div className="portfolio-more">
+              <a href={GRAPHICS_PROJECTS[0].driveLink} target="_blank" rel="noopener noreferrer" className="more-link">
+                View More Graphics Work
+                <IconArrowRight />
+              </a>
             </div>
           )}
         </div>
       </section>
 
-      {/* FAQ */}
-      <section id="faq" className="border-t border-white/5">
-        <div className="max-w-3xl mx-auto px-6 md:px-10 py-16 md:py-20">
-          <div className="text-center mb-10">
-            <span className="text-[10px] uppercase tracking-[0.3em] text-amber-400/80 font-mono block mb-2">FAQ</span>
-            <h2 className="text-2xl md:text-3xl font-display font-semibold text-white">Common Questions</h2>
+      {/* ═══════════ PORTFOLIO — VIDEOS ═══════════ */}
+      <section id="portfolio-videos" style={{ background: "var(--bg2)" }}>
+        <div className="divider" />
+        <div className="section-inner">
+          <Reveal variant="reveal" className="section-label">
+            Portfolio
+          </Reveal>
+          <Reveal variant="reveal" as="h2" className="section-title">
+            Video <em>Editing</em>
+          </Reveal>
+          <Reveal variant="reveal" as="p" className="section-sub">
+            Short-form and long-form edits built for retention and watch time.
+          </Reveal>
+          <div className="portfolio-grid">
+            {VIDEO_PROJECTS.map((vid) => (
+              <ProjectCard
+                key={vid.id}
+                category={`${vid.duration} • ${vid.platform}`}
+                title={vid.title}
+                description={vid.description}
+                tags={vid.software}
+                placeholderIcon={Video}
+              />
+            ))}
           </div>
-          <div className="space-y-3">
+        </div>
+      </section>
+
+      {/* ═══════════ PORTFOLIO — WORKFLOWS ═══════════ */}
+      <section id="portfolio-workflows">
+        <div className="divider" />
+        <div className="section-inner">
+          <Reveal variant="reveal" className="section-label">
+            Portfolio
+          </Reveal>
+          <Reveal variant="reveal" as="h2" className="section-title">
+            Automation <em>Workflows</em>
+          </Reveal>
+          <Reveal variant="reveal" as="p" className="section-sub">
+            GoHighLevel workflow builds — trigger logic, actions, and business impact.
+          </Reveal>
+          <div className="portfolio-grid">
+            {AUTOMATION_PROJECTS.map((aut) => (
+              <ProjectCard
+                key={aut.id}
+                category={`Trigger: ${aut.trigger}`}
+                title={aut.title}
+                description={`${aut.description} ${aut.businessImpact}`}
+                tags={aut.software}
+                placeholderIcon={Zap}
+              />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ═══════════ FAQ ═══════════ */}
+      <section id="faq" style={{ background: "var(--bg2)" }}>
+        <div className="divider" />
+        <div className="section-inner">
+          <Reveal variant="reveal" className="section-label">
+            FAQ
+          </Reveal>
+          <Reveal variant="reveal" as="h2" className="section-title">
+            Common <em>Questions</em>
+          </Reveal>
+          <Reveal variant="reveal" as="p" className="section-sub">
+            Everything you need to know before we start working together.
+          </Reveal>
+          <div className="faq-wrap" style={{ marginTop: 52 }}>
             {FAQS.map((faq, idx) => (
-              <div key={idx} className="bg-[#0d1119] border border-white/5 rounded-xl overflow-hidden">
-                <button
-                  onClick={() => setOpenFaq(openFaq === idx ? null : idx)}
-                  className="w-full flex items-center justify-between gap-4 p-5 text-left"
-                >
-                  <span className="text-sm font-medium text-white">{faq.q}</span>
-                  <ChevronDown className={`h-4 w-4 text-amber-400 shrink-0 transition-transform ${openFaq === idx ? "rotate-180" : ""}`} />
+              <div key={idx} className={`faq-item ${openFaq === idx ? "open" : ""}`}>
+                <button className="faq-q" onClick={() => setOpenFaq(openFaq === idx ? null : idx)}>
+                  <span className="faq-q-text">{faq.q}</span>
+                  <span className="faq-icon">
+                    <Plus size={14} />
+                  </span>
                 </button>
-                {openFaq === idx && (
-                  <p className="px-5 pb-5 text-xs text-zinc-400 font-light leading-relaxed">{faq.a}</p>
-                )}
+                <div className="faq-a">
+                  <div className="faq-a-inner">{faq.a}</div>
+                </div>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* CONTACT */}
-      <section id="contact" className="border-t border-white/5 bg-white/[0.015]">
-        <div className="max-w-4xl mx-auto px-6 md:px-10 py-16 md:py-20 text-center space-y-8">
-          <Sparkles className="h-6 w-6 text-amber-400 mx-auto" />
-          <h2 className="text-2xl md:text-3xl font-display font-semibold text-white">
-            Let's Build Your Next Funnel or Automation
-          </h2>
-          <p className="text-sm text-zinc-400 font-light max-w-xl mx-auto">
-            Pick whichever works best for you — I typically respond within a few hours.
-          </p>
-
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-2xl mx-auto">
-            <a
-              href={calendar}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex flex-col items-center gap-2 p-5 bg-amber-400/5 border border-amber-400/20 hover:border-amber-400/50 hover:bg-amber-400/10 rounded-2xl transition"
-            >
-              <Calendar className="h-5 w-5 text-amber-400" />
-              <span className="text-xs font-semibold text-white">Google Calendar</span>
-            </a>
-            <a
-              href={messenger}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex flex-col items-center gap-2 p-5 bg-[#0084FF]/5 border border-[#0084FF]/20 hover:border-[#0084FF]/50 hover:bg-[#0084FF]/10 rounded-2xl transition"
-            >
-              <MessageSquare className="h-5 w-5 text-[#0084FF]" />
-              <span className="text-xs font-semibold text-white">Messenger</span>
-            </a>
-            <a
-              href={whatsapp}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex flex-col items-center gap-2 p-5 bg-[#25D366]/5 border border-[#25D366]/20 hover:border-[#25D366]/50 hover:bg-[#25D366]/10 rounded-2xl transition"
-            >
-              <PhoneCall className="h-5 w-5 text-[#25D366]" />
-              <span className="text-xs font-semibold text-white">WhatsApp</span>
-            </a>
+      {/* ═══════════ CONTACT ═══════════ */}
+      <section id="contact">
+        <div className="divider" />
+        <div className="section-inner">
+          <Reveal variant="reveal" className="section-label">
+            Get In Touch
+          </Reveal>
+          <div className="contact-grid">
+            <Reveal variant="reveal-left" className="contact-info">
+              <h2 className="contact-heading">
+                Let's Build Something <em>Great Together.</em>
+              </h2>
+              <p className="contact-body">
+                Ready to scale your funnels and automations? Whether you need a full GHL build or just one specific
+                service — I'm here to help.
+              </p>
+              <div className="contact-items">
+                <a href={`tel:+${whatsappDigits}`} className="contact-item">
+                  <div className="contact-item-icon">
+                    <IconPhone />
+                  </div>
+                  <div>
+                    <div className="contact-item-label">Phone</div>
+                    <div className="contact-item-val">{phoneDisplay}</div>
+                  </div>
+                </a>
+                <a href={whatsapp} target="_blank" rel="noopener noreferrer" className="contact-item">
+                  <div className="contact-item-icon">
+                    <IconWhatsapp />
+                  </div>
+                  <div>
+                    <div className="contact-item-label">WhatsApp</div>
+                    <div className="contact-item-val">{phoneDisplay}</div>
+                  </div>
+                </a>
+                <a href={messenger} target="_blank" rel="noopener noreferrer" className="contact-item">
+                  <div className="contact-item-icon">
+                    <IconMessenger />
+                  </div>
+                  <div>
+                    <div className="contact-item-label">Messenger</div>
+                    <div className="contact-item-val">Chat directly</div>
+                  </div>
+                </a>
+                <a href={`mailto:${email}`} className="contact-item">
+                  <div className="contact-item-icon">
+                    <Users size={18} color="var(--accent)" />
+                  </div>
+                  <div>
+                    <div className="contact-item-label">Email</div>
+                    <div className="contact-item-val">{email}</div>
+                  </div>
+                </a>
+              </div>
+            </Reveal>
+            <Reveal variant="reveal-right" className="big-cta-card">
+              <div className="cta-card-title">
+                Ready to <em>get started?</em>
+                <br />
+                Let's talk strategy.
+              </div>
+              <p className="cta-card-sub">
+                Book a free discovery call and let's map out how I can help you scale. No pressure, just a conversation
+                about your goals and how automation can get you there.
+              </p>
+              <div className="cta-card-btns">
+                <a href={calendar} target="_blank" rel="noopener noreferrer" className="btn btn-primary">
+                  Book A Free Call
+                  <IconArrowRight />
+                </a>
+                <a href={whatsapp} target="_blank" rel="noopener noreferrer" className="btn btn-ghost">
+                  Message on WhatsApp
+                </a>
+              </div>
+            </Reveal>
           </div>
-
-          <a href={`mailto:${email}`} className="inline-flex items-center gap-2 text-xs text-zinc-500 hover:text-amber-400 transition">
-            <Mail className="h-3.5 w-3.5" />
-            {email}
-          </a>
         </div>
       </section>
 
-      {/* FOOTER */}
-      <footer className="border-t border-white/5 py-8 px-6 md:px-10 flex flex-col sm:flex-row items-center justify-between text-[10px] text-white/30 font-mono tracking-widest uppercase gap-4">
-        <div>&copy; {new Date().getFullYear()} {GLENN_INFO.name.toUpperCase()}</div>
-        <a href={calendar} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 hover:text-amber-400 transition">
-          Book a call <ArrowUpRight className="h-3 w-3" />
-        </a>
+      <footer>
+        <div className="footer-logo">
+          Glenn<span>.</span>Polia
+        </div>
+        <div className="footer-copy">&copy; {new Date().getFullYear()} {GLENN_INFO.name}. All rights reserved.</div>
+        <div className="footer-links">
+          <a href="#about">About</a>
+          <a href="#services">Services</a>
+          <a href="#portfolio-funnels">Projects</a>
+          <a href="#contact">Contact</a>
+        </div>
       </footer>
-
-    </div>
+    </>
   );
 }
