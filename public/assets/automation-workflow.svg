@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500">
+  <defs>
+    <radialGradient id="glow" cx="50%" cy="46%" r="65%">
+      <stop offset="0%" stop-color="#00e5ff" stop-opacity="0.16"/>
+      <stop offset="100%" stop-color="#00e5ff" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="line" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#00e5ff" stop-opacity="0.15"/>
+      <stop offset="50%" stop-color="#00e5ff" stop-opacity="0.65"/>
+      <stop offset="100%" stop-color="#00e5ff" stop-opacity="0.15"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="800" height="500" fill="#0a0d0f"/>
+  <rect width="800" height="500" fill="url(#glow)"/>
+
+  <!-- faint grid -->
+  <g stroke="#00e5ff" stroke-opacity="0.05">
+    <path d="M0 100H800M0 200H800M0 300H800M0 400H800"/>
+    <path d="M100 0V500M250 0V500M400 0V500M550 0V500M700 0V500"/>
+  </g>
+
+  <!-- connection lines: satellites into hub -->
+  <g fill="none" stroke="url(#line)" stroke-width="1.5">
+    <path d="M150 110 C 260 110, 300 200, 400 250"/>
+    <path d="M650 110 C 540 110, 500 200, 400 250"/>
+    <path d="M150 390 C 260 390, 300 300, 400 250"/>
+    <path d="M650 390 C 540 390, 500 300, 400 250"/>
+    <path d="M400 250 L 400 60"/>
+  </g>
+
+  <!-- traveling pulse dots -->
+  <circle r="3.5" fill="#7cf5ff">
+    <animateMotion dur="4.5s" repeatCount="indefinite" path="M150 110 C 260 110, 300 200, 400 250"/>
+  </circle>
+  <circle r="3.5" fill="#7cf5ff">
+    <animateMotion dur="5.2s" repeatCount="indefinite" path="M650 390 C 540 390, 500 300, 400 250"/>
+  </circle>
+  <circle r="3" fill="#7cf5ff">
+    <animateMotion dur="3.8s" repeatCount="indefinite" path="M400 250 L 400 60"/>
+  </circle>
+
+  <!-- satellite nodes -->
+  <g>
+    <circle cx="150" cy="110" r="34" fill="#0d1216" stroke="#00e5ff" stroke-opacity="0.4"/>
+    <path d="M138 110h24M150 98v24" stroke="#7cf5ff" stroke-width="2" stroke-linecap="round"/>
+  </g>
+  <g>
+    <circle cx="650" cy="110" r="34" fill="#0d1216" stroke="#00e5ff" stroke-opacity="0.4"/>
+    <rect x="638" y="99" width="24" height="22" rx="3" fill="none" stroke="#7cf5ff" stroke-width="2"/>
+    <path d="M638 104h24" stroke="#7cf5ff" stroke-width="2"/>
+  </g>
+  <g>
+    <circle cx="150" cy="390" r="34" fill="#0d1216" stroke="#00e5ff" stroke-opacity="0.4"/>
+    <path d="M138 384h24M138 392h16M138 400h20" stroke="#7cf5ff" stroke-width="2" stroke-linecap="round"/>
+  </g>
+  <g>
+    <circle cx="650" cy="390" r="34" fill="#0d1216" stroke="#00e5ff" stroke-opacity="0.4"/>
+    <circle cx="650" cy="390" r="9" fill="none" stroke="#7cf5ff" stroke-width="2"/>
+    <path d="M650 373v8M650 399v8M667 390h-8M641 390h-8" stroke="#7cf5ff" stroke-width="2" stroke-linecap="round"/>
+  </g>
+  <g>
+    <circle cx="400" cy="60" r="24" fill="#0d1216" stroke="#00e5ff" stroke-opacity="0.4"/>
+    <path d="M391 60l6 6 12-12" fill="none" stroke="#7cf5ff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+
+  <!-- hub -->
+  <circle cx="400" cy="250" r="54" fill="#0d1216" stroke="#00e5ff" stroke-width="1.5"/>
+  <circle cx="400" cy="250" r="54" fill="none" stroke="#00e5ff" stroke-opacity="0.35" stroke-width="10"/>
+  <g stroke="#7cf5ff" stroke-width="2.5" stroke-linecap="round" fill="none">
+    <circle cx="400" cy="250" r="16"/>
+    <path d="M400 226v10M400 264v10M424 250h-10M386 250h-10"/>
+  </g>
+</svg>

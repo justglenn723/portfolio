@@ -453,6 +453,12 @@ section{position:relative;z-index:1}
   color:var(--muted);transition:color .3s,border-color .3s;
 }
 .tool-card:hover .tool-icon{color:var(--accent);border-color:var(--border)}
+.tool-logo{
+  width:44px;height:28px;object-fit:contain;
+  filter:grayscale(35%) brightness(1.1);
+  transition:filter .3s;
+}
+.tool-card:hover .tool-logo{filter:grayscale(0%) brightness(1.25) drop-shadow(0 0 6px rgba(0,225,255,.45))}
 .tool-name{font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);text-align:center}
 
 /* ─── PORTFOLIO SECTIONS ─── */

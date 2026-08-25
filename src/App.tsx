@@ -49,19 +49,17 @@ const TOTAL_PROJECTS =
 
 const YEARS_EXPERIENCE = "2+";
 
-const ALL_TOOLS = Array.from(
-  new Set([
-    "GoHighLevel",
-    "ClickUp",
-    "Closebot AI",
-    "Twilio",
-    "Zapier",
-    "Stripe",
-    ...GRAPHICS_PROJECTS.flatMap((g) => g.software),
-    ...VIDEO_PROJECTS.flatMap((v) => v.software),
-    ...AUTOMATION_PROJECTS.flatMap((a) => a.software)
-  ])
-);
+const TOOLS: { name: string; logo?: string }[] = [
+  { name: "GoHighLevel", logo: "https://cdn.prod.website-files.com/5f15081919fdf673994ab5fd/6697e68b90253f000eed3a7c_HighLevel-Logo-(PNG).png" },
+  { name: "ClickUp", logo: "https://cdn.simpleicons.org/clickup/8a9598" },
+  { name: "Zapier", logo: "https://cdn.simpleicons.org/zapier/8a9598" },
+  { name: "Stripe", logo: "https://cdn.simpleicons.org/stripe/8a9598" },
+  { name: "Mailgun", logo: "https://cdn.simpleicons.org/mailgun/8a9598" },
+  { name: "Canva" },
+  { name: "CapCut" },
+  { name: "Twilio" },
+  { name: "Closebot AI" }
+];
 
 const NAV_LINKS = [
   { href: "#about", label: "About" },
@@ -588,10 +586,14 @@ export default function App() {
             Platforms and software I use daily to build, automate, and ship client work.
           </Reveal>
           <div className="tools-grid">
-            {ALL_TOOLS.map((tool, idx) => (
+            {TOOLS.map((tool, idx) => (
               <Reveal key={idx} variant="reveal" className="tool-card">
-                <div className="tool-icon">{tool[0]}</div>
-                <div className="tool-name">{tool}</div>
+                {tool.logo ? (
+                  <img className="tool-logo" src={tool.logo} alt={tool.name} loading="lazy" />
+                ) : (
+                  <div className="tool-icon">{tool.name[0]}</div>
+                )}
+                <div className="tool-name">{tool.name}</div>
               </Reveal>
             ))}
           </div>
@@ -726,6 +728,7 @@ export default function App() {
                 title={aut.title}
                 description={`${aut.description} ${aut.businessImpact}`}
                 tags={aut.software}
+                imageUrl="/assets/automation-workflow.svg"
                 placeholderIcon={Zap}
               />
             ))}

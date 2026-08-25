@@ -38,17 +38,14 @@ export const SKILL_GROUPS: SkillGroup[] = [
     category: "Funnel & Visual Design",
     items: [
       "High-Converting Funnel Layouts",
-      "Adobe Photoshop & Illustrator",
       "Canva Pro & Brand Asset Kits",
-      "Figma Wireframing & Prototyping",
       "Responsive Web Design & Custom CSS"
     ]
   },
   {
     category: "Video Editing & Post-Production",
     items: [
-      "Adobe Premiere Pro",
-      "CapCut Pro & Kinetic Typography",
+      "CapCut Pro",
       "Sound Design & Audio Enhancements",
       "High-Retention Short Form (Reels/TikToks)",
       "VSL (Video Sales Letters) & Long Form"
