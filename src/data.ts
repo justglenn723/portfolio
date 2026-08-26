@@ -56,63 +56,68 @@ export const SKILL_GROUPS: SkillGroup[] = [
 export const FUNNEL_PROJECTS: FunnelProject[] = [
   {
     id: "funnel-build-1",
-    title: "GoHighLevel Funnel Build 1",
+    title: "Ruben & Arthur — 2026 Partnership Kit",
     type: "Live Client Funnel",
     platform: "GoHighLevel",
-    niche: "Client Project",
-    description: "A live funnel built and deployed in GoHighLevel. View the full working build via the link below.",
+    niche: "Real Estate / Media Kit",
+    description: "A social media collaboration media kit and partnership funnel for Ruben & Arthur, positioning \"The Brothers Building America\" for brand and builder partnerships.",
     features: [],
     gradient: "from-teal-500/20 to-blue-500/10",
     visualConcept: "Live GoHighLevel funnel build.",
-    liveUrl: "https://app.gohighlevel.com/v2/preview/T7r63z5lkenUyB7ZqSSq?notrack=true"
+    liveUrl: "https://app.gohighlevel.com/v2/preview/T7r63z5lkenUyB7ZqSSq?notrack=true",
+    imageUrl: "/assets/funnels/ruben-arthur-partnership.png"
   },
   {
     id: "funnel-build-2",
-    title: "GoHighLevel Funnel Build 2",
+    title: "Burn Bright Pro — Instagram Comment Automation",
     type: "Live Client Funnel",
     platform: "GoHighLevel",
-    niche: "Client Project",
-    description: "A live funnel built and deployed in GoHighLevel. View the full working build via the link below.",
+    niche: "SaaS / Business Automation",
+    description: "An awareness-engine landing page for Burn Bright Pro, an all-in-one automation platform that turns Instagram post comments into conversion opportunities.",
     features: [],
     gradient: "from-amber-500/20 to-orange-500/10",
     visualConcept: "Live GoHighLevel funnel build.",
-    liveUrl: "https://app.gohighlevel.com/v2/preview/4Kldl6gfh04SWEOXoLm8?notrack=true"
+    liveUrl: "https://app.gohighlevel.com/v2/preview/4Kldl6gfh04SWEOXoLm8?notrack=true",
+    imageUrl: "/assets/funnels/burn-bright-pro-ig.png"
   },
   {
     id: "funnel-build-3",
-    title: "GoHighLevel Funnel Build 3",
+    title: "VelaMD — Dermatology Telehealth Funnel",
     type: "Live Client Funnel",
     platform: "GoHighLevel",
-    niche: "Client Project",
-    description: "A live funnel built and deployed in GoHighLevel. View the full working build via the link below.",
+    niche: "Healthcare / Telehealth",
+    description: "A dermatology telehealth funnel for VelaMD offering Accutane prescriptions and 24/7 dermatologist access, with a clear \"How It Works\" 3-step walkthrough.",
     features: [],
     gradient: "from-pink-500/20 to-rose-500/10",
     visualConcept: "Live GoHighLevel funnel build.",
-    liveUrl: "https://app.gohighlevel.com/v2/preview/8P91zxwp8ZsMdXbOqibF?notrack=true"
+    liveUrl: "https://app.gohighlevel.com/v2/preview/8P91zxwp8ZsMdXbOqibF?notrack=true",
+    imageUrl: "/assets/funnels/vela-md-how-it-works.png"
   },
   {
     id: "funnel-build-4",
-    title: "GoHighLevel Funnel Build 4",
+    title: "GLP-1 Demo Clinic — Weight Loss Funnel",
     type: "Live Client Funnel",
     platform: "GoHighLevel",
-    niche: "Client Project",
-    description: "A live funnel built and deployed in GoHighLevel. View the full working build via the link below.",
+    niche: "Healthcare / Weight Loss",
+    description: "A medical weight loss funnel for GLP-1 Demo Clinic promoting compounded semaglutide and GLP-1 programs, built to drive consultation sign-ups.",
     features: [],
     gradient: "from-purple-500/20 to-indigo-500/10",
     visualConcept: "Live GoHighLevel funnel build.",
-    liveUrl: "https://app.gohighlevel.com/v2/preview/7W6Ieb6PAlZJ4UOelx4T"
+    liveUrl: "https://app.gohighlevel.com/v2/preview/7W6Ieb6PAlZJ4UOelx4T",
+    imageUrl: "/assets/funnels/glp1-demo-clinic.png"
   },
   {
     id: "funnel-build-5",
-    title: "GoHighLevel Funnel Build 5",
+    title: "SMARTLink Services LLC — Network Infrastructure",
     type: "Live Client Funnel",
     platform: "GoHighLevel",
-    niche: "Client Project",
-    description: "A live funnel built and deployed in GoHighLevel. View the full working build via the link below.",
+    niche: "B2B / Field Services",
+    description: "A lead-generation funnel for SMARTLink Services LLC, a broadband, fiber, and network installation company, built to convert visitors into project inquiries.",
     features: [],
     gradient: "from-emerald-500/20 to-teal-500/10",
     visualConcept: "Live GoHighLevel funnel build.",
-    liveUrl: "https://app.gohighlevel.com/v2/preview/f08rWhxfie91HDwC43CV?notrack=true"
+    liveUrl: "https://app.gohighlevel.com/v2/preview/f08rWhxfie91HDwC43CV?notrack=true",
+    imageUrl: "/assets/funnels/smartlink-services.png"
   }
 ];
 

@@ -621,6 +621,7 @@ export default function App() {
                 title={fun.title}
                 description={fun.description}
                 tags={[fun.platform]}
+                imageUrl={fun.imageUrl}
                 linkUrl={fun.liveUrl}
                 linkLabel="View Live"
                 placeholderIcon={Globe}

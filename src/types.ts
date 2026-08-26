@@ -9,6 +9,7 @@ export interface FunnelProject {
   gradient: string;
   visualConcept: string;
   liveUrl?: string;
+  imageUrl?: string;
 }
 
 export interface GraphicsProject {
