@@ -1,11 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Plus, Globe, Palette, Video, Zap, Users } from "lucide-react";
+import { Plus, Globe, Palette, Video, Zap, Users, Volume2, VolumeX } from "lucide-react";
 import {
   GLENN_INFO,
   SKILL_GROUPS,
   FUNNEL_PROJECTS,
   GRAPHICS_PROJECTS,
   VIDEO_PROJECTS,
+  LIVE_REELS,
   AUTOMATION_PROJECTS,
   EXPERIENCES,
   EDUCATION_INFO
@@ -235,6 +236,72 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
             ))}
           </div>
         )}
+      </div>
+    </Reveal>
+  );
+};
+
+const LiveReelPlayer: React.FC = () => {
+  const [index, setIndex] = useState(0);
+  const [muted, setMuted] = useState(true);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    const el = videoRef.current;
+    if (!el) return;
+    el.play().catch(() => {});
+  }, [index]);
+
+  const advance = () => {
+    setIndex((i) => (i + 1) % LIVE_REELS.length);
+  };
+
+  const blockSeekKeys = (e: React.KeyboardEvent<HTMLVideoElement>) => {
+    if (["ArrowLeft", "ArrowRight", "Home", "End", " ", "k", "K", "j", "J", "l", "L"].includes(e.key)) {
+      e.preventDefault();
+    }
+  };
+
+  const current = LIVE_REELS[index];
+
+  return (
+    <Reveal className="live-reel">
+      <div className="live-reel-frame">
+        <video
+          key={current.id}
+          ref={videoRef}
+          src={current.src}
+          autoPlay
+          muted={muted}
+          playsInline
+          tabIndex={-1}
+          onEnded={advance}
+          onKeyDown={blockSeekKeys}
+          onContextMenu={(e) => e.preventDefault()}
+          controlsList="nodownload noremoteplayback nofullscreen"
+          disablePictureInPicture
+          className="live-reel-video"
+        />
+        <div className="live-reel-badge">
+          <span className="live-reel-dot" />
+          LIVE
+        </div>
+        <button
+          type="button"
+          className="live-reel-mute"
+          onClick={() => setMuted((m) => !m)}
+          aria-label={muted ? "Unmute" : "Mute"}
+        >
+          {muted ? <VolumeX size={16} /> : <Volume2 size={16} />}
+        </button>
+        <div className="live-reel-caption">
+          Now Airing &middot; {current.label}
+        </div>
+      </div>
+      <div className="live-reel-dots">
+        {LIVE_REELS.map((reel, i) => (
+          <span key={reel.id} className={`live-reel-tick ${i === index ? "is-active" : ""}`} />
+        ))}
       </div>
     </Reveal>
   );
@@ -683,18 +750,31 @@ export default function App() {
           <Reveal variant="reveal" as="p" className="section-sub">
             Short-form ad edits built for retention, watch time, and paid social performance.
           </Reveal>
-          <div className="portfolio-grid">
+          <div className="live-reel-layout">
+            <LiveReelPlayer />
             {VIDEO_PROJECTS.map((vid) => (
-              <ProjectCard
-                key={vid.id}
-                category={`${vid.duration} • ${vid.platform}`}
-                title={vid.title}
-                description={vid.description}
-                tags={vid.software}
-                linkUrl={vid.driveLink}
-                linkLabel="Watch Reels"
-                placeholderIcon={Video}
-              />
+              <Reveal key={vid.id} className="live-reel-info">
+                <div className="project-cat-tag">
+                  <span className="project-cat-dot" />
+                  {vid.duration} &middot; {vid.platform}
+                </div>
+                <div className="project-title">{vid.title}</div>
+                <p className="project-desc">{vid.description}</p>
+                <ul className="live-reel-bullets">
+                  {vid.bullets.map((b, i) => (
+                    <li key={i}>{b}</li>
+                  ))}
+                </ul>
+                {vid.software.length > 0 && (
+                  <div className="project-tags">
+                    {vid.software.map((tag, idx) => (
+                      <span key={idx} className="project-tag">
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                )}
+              </Reveal>
             ))}
           </div>
           {VIDEO_PROJECTS[0]?.driveLink && (

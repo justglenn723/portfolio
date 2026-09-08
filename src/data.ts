@@ -181,7 +181,7 @@ export const VIDEO_PROJECTS: VideoProject[] = [
   {
     id: "hook-body-ad-reels",
     title: "Direct-Response Hook & Body Ad Reels",
-    duration: "15-45 Seconds",
+    duration: "Full Reel Compilations",
     platform: "Instagram Reels & TikTok",
     style: "UGC-Style Direct-Response Ads",
     software: ["CapCut Pro", "Adobe Premiere Pro"],
@@ -195,6 +195,19 @@ export const VIDEO_PROJECTS: VideoProject[] = [
     gradient: "from-cyan-500/20 to-blue-500/10",
     driveLink: PORTFOLIO_DRIVE_LINK
   }
+];
+
+export interface LiveReel {
+  id: string;
+  label: string;
+  src: string;
+}
+
+export const LIVE_REELS: LiveReel[] = [
+  { id: "ad3", label: "Ad Variant 3 + Body", src: "/assets/videos/ad3-body-reel.mp4" },
+  { id: "ad4", label: "Ad Variant 4 + Body", src: "/assets/videos/ad4-body-reel.mp4" },
+  { id: "ad5", label: "Ad Variant 5 + Body", src: "/assets/videos/ad5-body-reel.mp4" },
+  { id: "ad11", label: "Ad Variant 11 + Body", src: "/assets/videos/ad11-body-reel.mp4" }
 ];
 
 export const AUTOMATION_PROJECTS: AutomationProject[] = [
