@@ -1,20 +1,28 @@
-import { 
-  FunnelProject, 
-  GraphicsProject, 
-  VideoProject, 
-  AutomationProject, 
-  Experience, 
-  Education, 
-  SkillGroup 
+import {
+  FunnelProject,
+  GraphicsProject,
+  VideoProject,
+  AutomationProject,
+  Experience,
+  Education,
+  ServiceGroup,
+  ProcessStep
 } from "./types";
+
+// Source of truth for work history, education, and skills: public/resume.pdf.
+// Keep this file consistent with the resume.
 
 export const GLENN_INFO = {
   name: "Glenn Jhune L. Polia",
-  title: "Systems Automation & Funnel Builder",
-  subtitle: "GoHighLevel Specialist & Digital Creative",
-  location: "Cebu, Philippines",
-  bio: "Empowering agency owners, coaches, and SaaS businesses by building high-converting GoHighLevel funnel systems, complex multi-channel automated workflows, professional graphic designs, and high-retention video edits. I combine technical automation logic with modern visual aesthetics to grow digital businesses.",
-  
+  title: "GoHighLevel Specialist",
+  subtitle: "Virtual Assistant | GoHighLevel Specialist | Systems & Funnel Support",
+  headline: "GoHighLevel Automation, Funnels & Virtual Assistance",
+  intro:
+    "I help businesses organize their CRM, build funnels and websites, automate repetitive tasks, and keep daily operations running smoothly.",
+  about:
+    "I'm a Virtual Assistant and BS Information Systems graduate with 2+ years of experience supporting business operations and US-based clients. Most of my work is in GoHighLevel: managing pipelines and contact records, building workflow automations, setting up funnels and websites, and helping with CloseBot integration. I also handle day-to-day admin, ClickUp task tracking, and reporting, and I can support marketing with graphic design and video editing.",
+  portfolioUrl: "https://glennpolia.vercel.app/",
+
   contactLinks: {
     messenger: "https://www.facebook.com/glenn.polia7?mibextid=ZbWKwL",
     whatsapp: "https://wa.me/639388589282",
@@ -23,99 +31,134 @@ export const GLENN_INFO = {
   }
 };
 
-export const SKILL_GROUPS: SkillGroup[] = [
+export const RESUME = {
+  url: "/resume.pdf",
+  downloadName: "Glenn_Polia_Resume.pdf"
+};
+
+export const SERVICE_GROUPS: ServiceGroup[] = [
   {
-    category: "GHL & CRM Automation",
+    category: "CRM & Automation",
+    summary: "Keep leads organized and follow-ups running without manual work.",
     items: [
-      "GoHighLevel (GHL) Architecture",
-      "Lead Nurture Workflows & Pipelines",
-      "Closebot AI & Chatbot Integrations",
-      "Twilio, Mailgun & SMTP Setup",
-      "Zapier & Webhook Connections"
+      "GoHighLevel CRM and pipeline management",
+      "Workflow automation (triggers, tags, follow-ups)",
+      "CloseBot integration",
+      "Contact record cleanup and organization"
     ]
   },
   {
-    category: "Funnel & Visual Design",
+    category: "Funnels & Websites",
+    summary: "Pages that explain your offer clearly and capture leads.",
     items: [
-      "High-Converting Funnel Layouts",
-      "Canva Pro & Brand Asset Kits",
-      "Responsive Web Design & Custom CSS"
+      "Funnel building in GoHighLevel",
+      "Landing pages",
+      "Website design and updates"
     ]
   },
   {
-    category: "Video Editing & Post-Production",
+    category: "VA Operations",
+    summary: "Reliable support for the daily tasks that keep the business moving.",
     items: [
-      "CapCut Pro",
-      "Sound Design & Audio Enhancements",
-      "High-Retention Short Form (Reels/TikToks)",
-      "VSL (Video Sales Letters) & Long Form"
+      "Data entry and data organization",
+      "Administrative support and documentation",
+      "Task coordination in ClickUp",
+      "Sales records and weekly reporting"
     ]
+  },
+  {
+    category: "Creative Support",
+    summary: "Supporting marketing assets when you need them.",
+    items: [
+      "Graphic design for ads and social posts",
+      "Short-form and long-form video editing (CapCut)",
+      "AI-assisted creative work (Higgsfield)"
+    ]
+  }
+];
+
+export const PROCESS_STEPS: ProcessStep[] = [
+  {
+    title: "Understand the setup",
+    text: "We go over your goals, your current GoHighLevel account or tools, and what needs to be built or fixed."
+  },
+  {
+    title: "Plan the work",
+    text: "I list the pages, pipelines, or workflows involved and confirm the details with you before building."
+  },
+  {
+    title: "Build and test",
+    text: "I build in your account and test each step, like form submissions, tags, and messages, before it goes live."
+  },
+  {
+    title: "Hand over and support",
+    text: "You get a short summary of what was done, and I stay available for changes and ongoing tasks."
   }
 ];
 
 export const FUNNEL_PROJECTS: FunnelProject[] = [
   {
     id: "funnel-build-1",
-    title: "Ruben & Arthur — 2026 Partnership Kit",
-    type: "Live Client Funnel",
+    title: "Ruben & Arthur: 2026 Partnership Kit",
+    type: "Funnel Build",
     platform: "GoHighLevel",
     niche: "Real Estate / Media Kit",
-    description: "A social media collaboration media kit and partnership funnel for Ruben & Arthur, positioning \"The Brothers Building America\" for brand and builder partnerships.",
-    features: [],
-    gradient: "from-teal-500/20 to-blue-500/10",
-    visualConcept: "Live GoHighLevel funnel build.",
+    description:
+      "A social media collaboration media kit and partnership funnel positioning \"The Brothers Building America\" for brand and builder partnerships.",
+    goal: "Present the brand to potential partners and collect partnership inquiries.",
+    role: "Built the funnel pages in GoHighLevel.",
     liveUrl: "https://app.gohighlevel.com/v2/preview/T7r63z5lkenUyB7ZqSSq?notrack=true",
     imageUrl: "/assets/funnels/ruben-arthur-partnership.png"
   },
   {
     id: "funnel-build-2",
-    title: "Burn Bright Pro — Instagram Comment Automation",
-    type: "Live Client Funnel",
+    title: "Burn Bright Pro: Instagram Comment Automation",
+    type: "Funnel Build",
     platform: "GoHighLevel",
     niche: "SaaS / Business Automation",
-    description: "An awareness-engine landing page for Burn Bright Pro, an all-in-one automation platform that turns Instagram post comments into conversion opportunities.",
-    features: [],
-    gradient: "from-amber-500/20 to-orange-500/10",
-    visualConcept: "Live GoHighLevel funnel build.",
+    description:
+      "A landing page for an all-in-one automation platform that turns Instagram post comments into conversation and sales opportunities.",
+    goal: "Explain the product and move visitors toward signing up.",
+    role: "Built the landing page in GoHighLevel.",
     liveUrl: "https://app.gohighlevel.com/v2/preview/4Kldl6gfh04SWEOXoLm8?notrack=true",
     imageUrl: "/assets/funnels/burn-bright-pro-ig.png"
   },
   {
     id: "funnel-build-3",
-    title: "VelaMD — Dermatology Telehealth Funnel",
-    type: "Live Client Funnel",
+    title: "VelaMD: Dermatology Telehealth Funnel",
+    type: "Funnel Build",
     platform: "GoHighLevel",
     niche: "Healthcare / Telehealth",
-    description: "A dermatology telehealth funnel for VelaMD offering Accutane prescriptions and 24/7 dermatologist access, with a clear \"How It Works\" 3-step walkthrough.",
-    features: [],
-    gradient: "from-pink-500/20 to-rose-500/10",
-    visualConcept: "Live GoHighLevel funnel build.",
+    description:
+      "A dermatology telehealth funnel with a clear three-step \"How It Works\" section explaining online consultations and prescriptions.",
+    goal: "Help visitors understand the online process and start a consultation.",
+    role: "Built the funnel pages in GoHighLevel.",
     liveUrl: "https://app.gohighlevel.com/v2/preview/8P91zxwp8ZsMdXbOqibF?notrack=true",
     imageUrl: "/assets/funnels/vela-md-how-it-works.png"
   },
   {
     id: "funnel-build-4",
-    title: "GLP-1 Demo Clinic — Weight Loss Funnel",
-    type: "Live Client Funnel",
+    title: "GLP-1 Demo Clinic: Weight Loss Funnel",
+    type: "Funnel Build",
     platform: "GoHighLevel",
     niche: "Healthcare / Weight Loss",
-    description: "A medical weight loss funnel for GLP-1 Demo Clinic promoting compounded semaglutide and GLP-1 programs, built to drive consultation sign-ups.",
-    features: [],
-    gradient: "from-purple-500/20 to-indigo-500/10",
-    visualConcept: "Live GoHighLevel funnel build.",
+    description:
+      "A medical weight loss funnel promoting GLP-1 programs, structured to drive consultation sign-ups.",
+    goal: "Drive consultation sign-ups for a weight loss program.",
+    role: "Built the funnel pages in GoHighLevel.",
     liveUrl: "https://app.gohighlevel.com/v2/preview/7W6Ieb6PAlZJ4UOelx4T",
     imageUrl: "/assets/funnels/glp1-demo-clinic.png"
   },
   {
     id: "funnel-build-5",
-    title: "SMARTLink Services LLC — Network Infrastructure",
-    type: "Live Client Funnel",
+    title: "SMARTLink Services: Network Infrastructure",
+    type: "Funnel Build",
     platform: "GoHighLevel",
     niche: "B2B / Field Services",
-    description: "A lead-generation funnel for SMARTLink Services LLC, a broadband, fiber, and network installation company, built to convert visitors into project inquiries.",
-    features: [],
-    gradient: "from-emerald-500/20 to-teal-500/10",
-    visualConcept: "Live GoHighLevel funnel build.",
+    description:
+      "A lead-generation funnel for a broadband, fiber, and network installation company, built to turn visitors into project inquiries.",
+    goal: "Collect project inquiries from businesses that need network installation.",
+    role: "Built the funnel pages in GoHighLevel.",
     liveUrl: "https://app.gohighlevel.com/v2/preview/f08rWhxfie91HDwC43CV?notrack=true",
     imageUrl: "/assets/funnels/smartlink-services.png"
   }
@@ -126,52 +169,46 @@ export const PORTFOLIO_DRIVE_LINK = "https://drive.google.com/drive/folders/1WQZ
 export const GRAPHICS_PROJECTS: GraphicsProject[] = [
   {
     id: "credit-brigade",
-    title: "Credit Brigade — Credit Repair Ad Creatives",
-    category: "GRAPHICS DESIGN",
+    title: "Credit Brigade: Credit Repair Ad Creatives",
+    category: "Graphic Design",
     software: ["Canva", "Social Media", "Branding"],
-    description: "Scroll-stopping ad creatives for Credit Brigade, a credit repair service — built around trust, clarity, and direct calls-to-action to drive lead generation.",
+    description:
+      "Ad creatives for a credit repair service, built around trust, clear benefits, and a direct call to action.",
     details: [
-      "Checklist-style value props (boost credit scores, achieve financial freedom) for fast scannability.",
-      "Consistent brand system (logo, navy/gold palette) applied across the ad set.",
-      "Direct contact info (phone, email, site) embedded for immediate response.",
-      "Quote-card and stat-driven variants tested alongside the checklist format."
+      "Checklist-style benefits for quick scanning.",
+      "Consistent logo and navy/gold palette across the ad set.",
+      "Contact details placed for a fast response."
     ],
-    gradient: "from-blue-600/20 to-sky-500/10",
-    visualConcept: "The True Value of Credit Repair.",
     imageUrl: "/assets/graphics/credit-brigade.png",
     driveLink: PORTFOLIO_DRIVE_LINK
   },
   {
     id: "eye-mazen-gummy",
-    title: "Zen Nutrients — Eye-Mazen Gummy Campaign",
-    category: "GRAPHICS DESIGN",
-    software: ["Canva", "Photoshop", "Product Ad"],
-    description: "A full ad creative set for The Eye-Mazen Gummy, a postbiotic eye-health supplement — covering hero claims, ingredient breakdowns, competitor comparisons, and lifestyle use-cases.",
+    title: "Zen Nutrients: Eye-Mazen Gummy Campaign",
+    category: "Graphic Design",
+    software: ["Canva", "Product Ad"],
+    description:
+      "An ad creative set for an eye-health supplement covering the main claim, ingredient breakdowns, a comparison table, and everyday use cases.",
     details: [
-      "Bold headline creative built around the product's core claim (world's first postbiotic eye gummy).",
-      "Ingredient/benefit breakdown cards translating clinical claims into consumer-friendly copy.",
-      "Head-to-head competitor comparison table (Eye-Mazen vs. Brand A/B).",
-      "Lifestyle scenarios (screen fatigue, video calls) tying the product to everyday use."
+      "Headline creative built around the product's main claim.",
+      "Ingredient and benefit cards written in plain language.",
+      "Comparison and lifestyle variants for testing."
     ],
-    gradient: "from-teal-500/20 to-orange-400/10",
-    visualConcept: "See better, perform better.",
     imageUrl: "/assets/graphics/eye-mazen-gummy.png",
     driveLink: PORTFOLIO_DRIVE_LINK
   },
   {
     id: "7figure-builder",
-    title: "7Figure Builder — Real Estate Course Funnel Ads",
-    category: "GRAPHICS DESIGN",
-    software: ["Canva", "Photoshop", "Ad Creative"],
-    description: "Bold, typography-driven ad creatives for 7Figure Builder, a real estate/home-building education brand — designed to interrupt the scroll and drive free starter-kit signups.",
+    title: "7Figure Builder: Real Estate Course Ads",
+    category: "Graphic Design",
+    software: ["Canva", "Ad Creative"],
+    description:
+      "Typography-driven ad creatives for a home-building education brand, designed to drive free starter-kit sign-ups.",
     details: [
-      "High-contrast black/gold typographic hooks built for pattern interruption on social feeds.",
-      "Founder-story creative pairing a personal photo with a direct testimonial hook.",
-      "Consistent 'Download it, it's free' CTA across the ad set.",
-      "House/key iconography reinforcing the real-estate build niche."
+      "High-contrast black and gold text hooks for social feeds.",
+      "Founder-story variant with a personal photo.",
+      "Consistent free-download call to action."
     ],
-    gradient: "from-amber-600/20 to-yellow-500/10",
-    visualConcept: "You're wasting time scrolling — build something real.",
     imageUrl: "/assets/graphics/7figure-builder.png",
     driveLink: PORTFOLIO_DRIVE_LINK
   }
@@ -180,19 +217,18 @@ export const GRAPHICS_PROJECTS: GraphicsProject[] = [
 export const VIDEO_PROJECTS: VideoProject[] = [
   {
     id: "hook-body-ad-reels",
-    title: "Direct-Response Hook & Body Ad Reels",
-    duration: "Full Reel Compilations",
+    title: "Hook & Body Ad Reels",
+    duration: "Short-form ads",
     platform: "Instagram Reels & TikTok",
-    style: "UGC-Style Direct-Response Ads",
-    software: ["CapCut Pro", "Adobe Premiere Pro"],
-    description: "A batch of hook-and-body style short-form ad edits — multiple hook variations (talking-head openers) cut against shared body footage, built for fast A/B testing of paid social ad angles.",
+    style: "UGC-style ads",
+    software: ["CapCut"],
+    description:
+      "A batch of short-form ad edits: several hook openers cut against the same body footage so different ad angles can be tested.",
     bullets: [
-      "Multiple interchangeable hook openers edited to pair with the same body content for rapid ad testing.",
-      "Punchy, retention-focused pacing suited for cold-audience paid social placements.",
-      "Consistent captioning and pacing style across the full reel batch.",
-      "Delivered as a ready-to-launch set for direct upload to ad accounts."
+      "Interchangeable hook openers paired with shared body content.",
+      "Fast pacing suited to paid social placements.",
+      "Consistent captions and pacing across the batch."
     ],
-    gradient: "from-cyan-500/20 to-blue-500/10",
     driveLink: PORTFOLIO_DRIVE_LINK
   }
 ];
@@ -210,81 +246,92 @@ export const LIVE_REELS: LiveReel[] = [
   { id: "ad11", label: "Ad Variant 11 + Body", src: "/assets/videos/ad11-body-reel.mp4" }
 ];
 
+// Sample workflow designs that show how I structure GoHighLevel automations.
+// Replace with real client workflows (and screenshots) when they can be shared.
 export const AUTOMATION_PROJECTS: AutomationProject[] = [
   {
     id: "lead-to-booking",
-    title: "Complete Lead-to-Booking GHL Workflow",
-    trigger: "New Contact Opt-In Form",
-    actions: [
-      "Assign User Tags",
-      "Dispatch Internal Slack/SMS Notification",
-      "Deploy 4-Part Interactive Text Sequence",
-      "Trigger Closebot AI Booking Nurse"
-    ],
-    software: ["GoHighLevel Workflows", "Closebot AI", "Twilio", "Zapier"],
-    description: "A bulletproof lead management pipeline designed to eliminate manual appointment setting. When a lead enters, GHL registers the contact, assigns an agent, and launches a conversation. If the prospect answers, Closebot AI automatically picks up, handles objections, checks available slots via API, and books the call.",
-    businessImpact: "Boosts booked calls by 42% by maintaining immediate response times 24 hours a day, 7 days a week.",
+    title: "Lead-to-Booking Workflow",
+    label: "Sample workflow design",
+    trigger: "New opt-in form submission",
+    software: ["GoHighLevel Workflows", "CloseBot"],
+    description:
+      "A lead follow-up flow that tags new contacts, updates the pipeline, sends a text right away, and hands the conversation to CloseBot to help book a call.",
     logic: [
-      "Trigger: Contact submitted form on Landing page",
-      "Action: tag prospect as 'Lead - Cold', update opportunity card in Sales Pipeline",
-      "Condition: Is it during standard business hours? If Yes, dispatch immediate interactive SMS. If No, queue for 8:30 AM next morning.",
-      "Action: Enable webhook linking to Closebot AI. Monitor incoming text messages.",
-      "Loop: AI responds to questions, proposes open calendar slots, processes the live calendar reservation, and moves the GHL opportunity status to 'Booked'."
+      "Tag the contact and create or update the opportunity in the sales pipeline.",
+      "Check business hours: text now, or queue the message for the next morning.",
+      "Hand replies to CloseBot to answer questions and offer open calendar slots.",
+      "Move the opportunity to \"Booked\" when an appointment is confirmed."
     ]
   },
   {
-    id: "review-booster",
-    title: "Automated Review Generator Engine",
-    trigger: "Opportunity Status Changed to 'Completed'",
-    actions: [
-      "Wait 4 Hours",
-      "Check Internal Feedback Survey",
-      "Conditionally Send Google Review Request"
-    ],
-    software: ["GoHighLevel Workflows", "Mailgun", "Twilio API"],
-    description: "An automated reputation management system that filters client satisfaction before asking for reviews. Sends an internal rating request (1-5 stars). If the rating is 4 or 5 stars, it redirects them automatically to Google Reviews with pre-filled parameters. If 3 stars or lower, it triggers an internal ticket for client relations rescue.",
-    businessImpact: "Protects reputation from low ratings while aggressively accumulating positive 5-star Google reviews automatically.",
+    id: "review-request",
+    title: "Review Request Workflow",
+    label: "Sample workflow design",
+    trigger: "Opportunity moved to \"Completed\"",
+    software: ["GoHighLevel Workflows"],
+    description:
+      "A follow-up flow that asks customers for a quick rating after a job is done, sends happy customers to the Google review page, and alerts the team about unhappy ones.",
     logic: [
-      "Trigger: Opportunity updated to 'Completed' in pipeline",
-      "Action: Wait 4 hours to let the service settle with the client",
-      "Action: Send elegant customer feedback SMS with simple 1-5 selection",
-      "Condition: If customer selects 4 or 5 stars, send follow-up: 'Thank you! Could you share your experience on our Google Profile?' with a direct redirect link",
-      "Condition: If customer selects 3 stars or below, send: 'We're so sorry to hear that. An agency manager will reach out within 1 hour' and assign high-priority tasks to the support team"
+      "Wait a few hours, then send a short 1 to 5 rating request by text.",
+      "If the rating is 4 or 5, send a thank-you message with the Google review link.",
+      "If the rating is 3 or lower, send an apology and create a follow-up task for the team."
     ]
   }
 ];
 
 export const EXPERIENCES: Experience[] = [
   {
-    role: "Lead Systems Automation Specialist",
-    company: "Apex Automation Agencies",
-    period: "2024 - Present",
-    location: "Remote / Cebu, Philippines",
+    role: "Virtual Assistant | GoHighLevel Specialist",
+    company: "NewWine",
+    period: "June 2024 – Present",
     bullets: [
-      "Architected over 80+ GHL workflows, reducing lead response times to under 60 seconds with advanced webhook and AI routing.",
-      "Built and deployed custom funnel systems for coaches, agency owners, and SaaS startups with continuous high conversion optimization.",
-      "Integrated third-party systems like Closebot AI, Stripe, Zapier, Twilio, and Mailgun to create hands-free booking experiences."
+      "Support business operations for a US-based business through virtual assistance and CRM-related tasks.",
+      "Manage GoHighLevel CRM functions, including pipelines, client records, and workflow automation.",
+      "Build and maintain funnels, websites, and automated processes based on business requirements.",
+      "Support task tracking and project coordination using ClickUp where required.",
+      "Assist with CloseBot integration and automated customer communication workflows.",
+      "Create graphic assets and edit video content for marketing and branding when needed."
     ]
   },
   {
-    role: "Senior Digital Designer & Video Editor",
-    company: "Horizon Media Labs",
-    period: "2022 - 2024",
-    location: "Cebu, Philippines",
+    role: "Sales Associate / Sales Administration Support",
+    company: "Bounty Plus Incorporated",
+    period: "April 2024 – June 2024",
+    location: "Butuan City, Philippines",
     bullets: [
-      "Created high-performing graphic assets, carousel packs, and sales deck layouts for diverse premium consulting clients.",
-      "Edited high-retention video shorts (Reels, TikToks) generating millions of combined organic views across client profiles.",
-      "Configured customized client membership portals and course structures directly within GoHighLevel CRMs."
+      "Recorded sales transactions and documented revenue and product or service details.",
+      "Prepared daily sales records and compiled weekly reports on sales performance and trends.",
+      "Reviewed sales information to identify patterns and potential growth opportunities."
+    ]
+  },
+  {
+    role: "Infection Prevention and Control Team Assistant",
+    company: "Dotties",
+    period: "October 2021",
+    location: "Butuan City, Philippines",
+    bullets: [
+      "Assisted with monitoring workplace health and safety compliance.",
+      "Supported administrative and coordination tasks for the infection prevention team."
     ]
   }
 ];
 
 export const EDUCATION_INFO: Education = {
-  degree: "Bachelor of Science in Information Technology",
-  school: "University of Cebu",
-  period: "2018 - 2022",
-  bullets: [
-    "Specialized in Database Management and Web Development Systems",
-    "Recipient of Academic Excellence Recognition in Multi-media Systems Design"
-  ]
+  degree: "Bachelor of Science in Information Systems",
+  school: "Caraga State University – Main Campus",
+  period: "2019 – 2023",
+  honors: "Cum Laude"
 };
+
+export const TRAININGS: string[] = [
+  "DICT Online Courses Achiever",
+  "Digital Marketing Channels and Funnel",
+  "Canva for Graphic Design",
+  "Data Privacy and Good Governance",
+  "Microsoft Productivity Tools",
+  "Design Thinking Workshop (Certificate of Participation)",
+  "Navigatalks: FAME Representative (Certificate of Participation)"
+];
+
+export const ELIGIBILITY = "Civil Service Eligible – Honor Graduate Eligibility";

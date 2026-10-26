@@ -76,7 +76,6 @@ Glenn is a results-driven Virtual Assistant and BS Information Systems graduate 
 
 ### Eligibility
 - Civil Service Eligible (Honor Graduate Eligibility)
-- Eligibility Number: 100115230770
 
 ### Awards & Achievements
 - Cum Laude Graduate
@@ -92,13 +91,6 @@ Glenn is a results-driven Virtual Assistant and BS Information Systems graduate 
 - Microsoft Productivity Tools
 - Certificate of Participation in Design Thinking Workshop
 - Certificate of Participation in Navigatalks: FAME Representative
-
-### Reference
-- CARLOS R. NEIS II
-  - Title: City Information & Unified Result-Based Risk Management Plan Section Head
-  - Organization: LGU Butuan - CSWD
-  - Contact: 09382911698
-  - Email: carlos.neisii@gmail.com
 
 ### Contacting Glenn
 Visitors can send message inquiries directly using the website's Interactive Message Center.
@@ -122,7 +114,7 @@ app.post("/api/chat", async (req, res) => {
     } else if (lastMsg.includes("experience") || lastMsg.includes("work")) {
       demoReply = "Glenn currently serves as a Virtual Assistant for NewWine (June 2024 - Present), building funnels, managing CRMs, automating GHL pipelines, and integrating Closebot AI. He also supported workplace safety compliance in Butuan City in 2021.";
     } else if (lastMsg.includes("contact") || lastMsg.includes("email") || lastMsg.includes("hire")) {
-      demoReply = "You can contact Glenn directly via the contact form on this website, or check his reference: Carlos R. Neis II (carlos.neisii@gmail.com).";
+      demoReply = "You can contact Glenn directly via the contact form on this website.";
     } else if (lastMsg.includes("education") || lastMsg.includes("college") || lastMsg.includes("laude")) {
       demoReply = "Glenn graduated Cum Laude with a Bachelor of Science in Information Systems from Caraga State University (Class of 2023).";
     }
