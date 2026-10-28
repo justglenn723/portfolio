@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Globe, Palette, Video, Zap, Users, Volume2, VolumeX, Briefcase, FileText, Download, ClipboardList } from "lucide-react";
+import { Globe, Palette, Video, Zap, Bot, Sparkles, Users, Volume2, VolumeX, Briefcase, FileText, Download, ClipboardList } from "lucide-react";
 import {
   GLENN_INFO,
   RESUME,
@@ -16,6 +16,7 @@ import {
   ELIGIBILITY
 } from "./data";
 import { FunnelProject } from "./types";
+import { WorkflowCanvas, AiBookingDemo } from "./Showcase";
 
 const { messenger, whatsapp, calendar, email } = GLENN_INFO.contactLinks;
 const whatsappDigits = whatsapp.replace(/\D/g, "");
@@ -113,12 +114,16 @@ function Reveal({
   as: Tag = "div",
   variant = "reveal",
   className = "",
+  delay = 0,
+  style,
   children,
   ...rest
 }: {
   as?: any;
   variant?: "reveal" | "reveal-left" | "reveal-right";
   className?: string;
+  delay?: number;
+  style?: React.CSSProperties;
   children: React.ReactNode;
   [key: string]: any;
 }) {
@@ -143,7 +148,7 @@ function Reveal({
   }, []);
 
   return (
-    <Tag ref={ref} className={`${variant} ${className}`} {...rest}>
+    <Tag ref={ref} className={`${variant} ${className}`} style={{ ...style, "--d": `${delay}s` } as React.CSSProperties} {...rest}>
       {children}
     </Tag>
   );
@@ -177,6 +182,8 @@ interface ProjectCardProps {
   linkUrl?: string;
   linkLabel?: string;
   placeholderIcon: any;
+  visual?: React.ReactNode;
+  delay?: number;
   children?: React.ReactNode;
 }
 
@@ -190,10 +197,13 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
   linkUrl,
   linkLabel,
   placeholderIcon: PlaceholderIcon,
+  visual,
+  delay = 0,
   children
 }) => {
   return (
-    <Reveal as="article" className="project-card">
+    <Reveal as="article" className="project-card" delay={delay}>
+      {visual ?? (
       <div className="project-thumb">
         {imageUrl ? (
           <img src={imageUrl} alt={imageAlt ?? `Screenshot of ${title}`} loading="lazy" referrerPolicy="no-referrer" />
@@ -203,6 +213,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
           </div>
         )}
       </div>
+      )}
       <div className="project-body">
         <div className="project-cat-tag">
           <span className="project-cat-dot" />
@@ -345,9 +356,14 @@ function ResumeButtons({ compact = false }: { compact?: boolean }) {
 export default function App() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const progressRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 40);
+    const onScroll = () => {
+      setScrolled(window.scrollY > 40);
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      if (progressRef.current) progressRef.current.style.transform = `scaleX(${max > 0 ? window.scrollY / max : 0})`;
+    };
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
@@ -369,6 +385,7 @@ export default function App() {
         Skip to content
       </a>
 
+      <div className="scroll-progress" ref={progressRef} aria-hidden="true" />
       <div className="blob b1" aria-hidden="true" />
       <div className="blob b2" aria-hidden="true" />
       <div className="blob b3" aria-hidden="true" />
@@ -472,9 +489,24 @@ export default function App() {
 
             <div className="hero-center">
               <div className="photo-wrap">
-                <img className="photo-img" src="/glenn-hero.jpg" alt={`Portrait of ${GLENN_INFO.name}`} />
-                <div className="photo-fade" />
-                <div className="photo-glow" />
+                <div className="photo-backdrop" aria-hidden="true" />
+                <div className="photo-frame">
+                  <img className="photo-img" src="/glenn-hero.jpg" alt={`Portrait of ${GLENN_INFO.name}`} />
+                </div>
+                <div className="photo-float photo-float-top" aria-hidden="true">
+                  <Zap size={14} />
+                  <span>
+                    <strong>GoHighLevel</strong>
+                    CRM &amp; Automation
+                  </span>
+                </div>
+                <div className="photo-float photo-float-bottom" aria-hidden="true">
+                  <span className="avail-dot" />
+                  <span>
+                    <strong>Available</strong>
+                    For new projects
+                  </span>
+                </div>
               </div>
               <div className="name-badge">
                 {GLENN_INFO.title}
@@ -511,7 +543,7 @@ export default function App() {
                 <Globe size={18} aria-hidden="true" /> GoHighLevel Funnels
               </Reveal>
               <div className="portfolio-grid">
-                {FUNNEL_PROJECTS.map((fun) => (
+                {FUNNEL_PROJECTS.map((fun, idx) => (
                   <ProjectCard
                     key={fun.id}
                     category={`${fun.type} · ${fun.niche}`}
@@ -523,6 +555,7 @@ export default function App() {
                     linkUrl={fun.liveUrl}
                     linkLabel="View Funnel Preview"
                     placeholderIcon={Globe}
+                    delay={(idx % 3) * 0.1}
                   >
                     <CaseStudyDetails project={fun} />
                   </ProjectCard>
@@ -530,34 +563,43 @@ export default function App() {
               </div>
             </div>
 
+            <div id="portfolio-ai" className="work-group">
+              <Reveal as="h3" className="work-group-title">
+                <Bot size={18} aria-hidden="true" /> AI Booking Assistant
+                <span className="new-badge">
+                  <Sparkles size={11} aria-hidden="true" /> AI-powered
+                </span>
+              </Reveal>
+              <Reveal as="p" className="work-group-note">
+                A demo of the kind of setup I build with CloseBot and GoHighLevel: the AI answers a new lead by text,
+                offers open times, books the call, and the pipeline updates on its own. The conversation and contact
+                are examples.
+              </Reveal>
+              <Reveal>
+                <AiBookingDemo />
+              </Reveal>
+            </div>
+
             <div id="portfolio-workflows" className="work-group">
               <Reveal as="h3" className="work-group-title">
                 <Zap size={18} aria-hidden="true" /> Automation Workflows
               </Reveal>
               <Reveal as="p" className="work-group-note">
-                These are sample designs that show how I plan GoHighLevel workflows step by step.
+                Sample designs laid out the way they look in the GoHighLevel workflow builder, using its real trigger
+                and action names.
               </Reveal>
               <div className="workflow-grid">
-                {AUTOMATION_PROJECTS.map((aut) => (
+                {AUTOMATION_PROJECTS.map((aut, idx) => (
                   <ProjectCard
                     key={aut.id}
                     category={aut.label}
                     title={aut.title}
                     description={aut.description}
                     tags={aut.software}
-                    imageUrl="/assets/automation-workflow.svg"
-                    imageAlt="Illustration of a workflow diagram"
                     placeholderIcon={Zap}
-                  >
-                    <p className="workflow-trigger">
-                      <strong>Trigger:</strong> {aut.trigger}
-                    </p>
-                    <ol className="workflow-steps">
-                      {aut.logic.map((step, i) => (
-                        <li key={i}>{step}</li>
-                      ))}
-                    </ol>
-                  </ProjectCard>
+                    visual={<WorkflowCanvas project={aut} />}
+                    delay={idx * 0.12}
+                  />
                 ))}
               </div>
             </div>
@@ -567,7 +609,7 @@ export default function App() {
                 <Palette size={18} aria-hidden="true" /> Graphic Design
               </Reveal>
               <div className="portfolio-grid">
-                {GRAPHICS_PROJECTS.map((gph) => (
+                {GRAPHICS_PROJECTS.map((gph, idx) => (
                   <ProjectCard
                     key={gph.id}
                     category={gph.category}
@@ -577,6 +619,7 @@ export default function App() {
                     imageUrl={gph.imageUrl}
                     imageAlt={`Ad creatives from the ${gph.title} project`}
                     placeholderIcon={Palette}
+                    delay={idx * 0.1}
                   />
                 ))}
               </div>
@@ -647,7 +690,7 @@ export default function App() {
               {SERVICE_GROUPS.map((group, idx) => {
                 const Icon = SERVICE_ICONS[idx % SERVICE_ICONS.length];
                 return (
-                  <Reveal key={idx} variant="reveal" className="service-card">
+                  <Reveal key={idx} variant="reveal" className="service-card" delay={idx * 0.1}>
                     <div className="service-num" aria-hidden="true">{String(idx + 1).padStart(2, "0")}</div>
                     <div className="service-icon">
                       <Icon aria-hidden="true" />
@@ -673,7 +716,7 @@ export default function App() {
             <SectionHeading label="Process" title="How I" accent="Work" />
             <ol className="process-grid">
               {PROCESS_STEPS.map((step, idx) => (
-                <Reveal as="li" key={step.title} className="process-step">
+                <Reveal as="li" key={step.title} className="process-step" delay={idx * 0.12}>
                   <span className="process-num" aria-hidden="true">{String(idx + 1).padStart(2, "0")}</span>
                   <h3 className="process-title">{step.title}</h3>
                   <p className="process-text">{step.text}</p>
@@ -695,7 +738,7 @@ export default function App() {
             />
             <ul className="tools-grid">
               {TOOLS.map((tool, idx) => (
-                <Reveal as="li" key={idx} variant="reveal" className="tool-card">
+                <Reveal as="li" key={idx} variant="reveal" className="tool-card" delay={idx * 0.06}>
                   {tool.logo ? (
                     <img className="tool-logo" src={tool.logo} alt="" loading="lazy" />
                   ) : (
@@ -759,7 +802,7 @@ export default function App() {
               </Reveal>
               <div className="timeline">
                 {EXPERIENCES.map((exp, idx) => (
-                  <Reveal key={idx} variant="reveal" className="timeline-item">
+                  <Reveal key={idx} variant="reveal" className="timeline-item" delay={idx * 0.1}>
                     <div className="timeline-head">
                       <span className="timeline-role">
                         {exp.role} <span className="timeline-org">&middot; {exp.company}</span>

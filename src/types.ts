@@ -37,14 +37,28 @@ export interface VideoProject {
   driveLink?: string;
 }
 
+export type WorkflowStepKind = "trigger" | "tag" | "opportunity" | "sms" | "email" | "wait" | "notify" | "task" | "ai";
+
+export interface WorkflowStep {
+  kind: WorkflowStepKind;
+  // GoHighLevel action name, e.g. "Add Contact Tag"
+  action: string;
+  detail: string;
+}
+
 export interface AutomationProject {
   id: string;
   title: string;
   label: string;
-  trigger: string;
   software: string[];
   description: string;
-  logic: string[];
+  steps: WorkflowStep[];
+  branch?: {
+    condition: string;
+    yes: WorkflowStep[];
+    no: WorkflowStep[];
+  };
+  after?: WorkflowStep[];
 }
 
 export interface Experience {

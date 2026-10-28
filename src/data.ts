@@ -246,37 +246,53 @@ export const LIVE_REELS: LiveReel[] = [
   { id: "ad11", label: "Ad Variant 11 + Body", src: "/assets/videos/ad11-body-reel.mp4" }
 ];
 
-// Sample workflow designs that show how I structure GoHighLevel automations.
-// Replace with real client workflows (and screenshots) when they can be shared.
+// Sample workflow designs drawn with GoHighLevel's own trigger and action names.
+// Replace with real client workflows when they can be shared.
 export const AUTOMATION_PROJECTS: AutomationProject[] = [
   {
     id: "lead-to-booking",
     title: "Lead-to-Booking Workflow",
     label: "Sample workflow design",
-    trigger: "New opt-in form submission",
     software: ["GoHighLevel Workflows", "CloseBot"],
     description:
-      "A lead follow-up flow that tags new contacts, updates the pipeline, sends a text right away, and hands the conversation to CloseBot to help book a call.",
-    logic: [
-      "Tag the contact and create or update the opportunity in the sales pipeline.",
-      "Check business hours: text now, or queue the message for the next morning.",
-      "Hand replies to CloseBot to answer questions and offer open calendar slots.",
-      "Move the opportunity to \"Booked\" when an appointment is confirmed."
-    ]
+      "A lead follow-up flow that tags new contacts, updates the pipeline, texts them right away or the next morning, and hands the conversation to CloseBot to help book a call.",
+    steps: [
+      { kind: "trigger", action: "Form Submitted", detail: "Opt-in Form" },
+      { kind: "tag", action: "Add Contact Tag", detail: "new lead" },
+      { kind: "opportunity", action: "Create/Update Opportunity", detail: "Sales Pipeline · New Lead" },
+      { kind: "notify", action: "Internal Notification", detail: "Alert assigned user" }
+    ],
+    branch: {
+      condition: "Within business hours?",
+      yes: [{ kind: "sms", action: "Send SMS", detail: "Instant welcome text" }],
+      no: [
+        { kind: "wait", action: "Wait", detail: "Until 8:30 AM" },
+        { kind: "sms", action: "Send SMS", detail: "Morning welcome text" }
+      ]
+    },
+    after: [{ kind: "ai", action: "Add Contact Tag", detail: "closebot-on · AI takes over replies" }]
   },
   {
     id: "review-request",
     title: "Review Request Workflow",
     label: "Sample workflow design",
-    trigger: "Opportunity moved to \"Completed\"",
     software: ["GoHighLevel Workflows"],
     description:
       "A follow-up flow that asks customers for a quick rating after a job is done, sends happy customers to the Google review page, and alerts the team about unhappy ones.",
-    logic: [
-      "Wait a few hours, then send a short 1 to 5 rating request by text.",
-      "If the rating is 4 or 5, send a thank-you message with the Google review link.",
-      "If the rating is 3 or lower, send an apology and create a follow-up task for the team."
-    ]
+    steps: [
+      { kind: "trigger", action: "Opportunity Status Changed", detail: "Status is Won" },
+      { kind: "wait", action: "Wait", detail: "4 hours" },
+      { kind: "sms", action: "Send SMS", detail: "Rate us from 1 to 5" },
+      { kind: "wait", action: "Wait", detail: "Until customer replies" }
+    ],
+    branch: {
+      condition: "Rating is 4 or 5?",
+      yes: [{ kind: "sms", action: "Send SMS", detail: "Google review link" }],
+      no: [
+        { kind: "notify", action: "Internal Notification", detail: "Alert the team" },
+        { kind: "task", action: "Add Task", detail: "Call the customer" }
+      ]
+    }
   }
 ];
 
