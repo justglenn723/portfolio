@@ -164,6 +164,47 @@ export const FUNNEL_PROJECTS: FunnelProject[] = [
   }
 ];
 
+// Real client work built with Claude Code. Client name changed for privacy; mockups use sample data only.
+export const CLAUDE_CODE_PROJECTS: FunnelProject[] = [
+  {
+    id: "cc-athlete-website",
+    title: "Youth Athlete Websites",
+    type: "Website + Parent Portal",
+    platform: "Claude Code · GoHighLevel",
+    niche: "Youth Sports",
+    description:
+      "A website for a sports marketing agency's youth athlete program, plus the parent portal behind it. Client name changed for privacy; mockup shown with sample data.",
+    role: "Took the approved design live on GoHighLevel and built everything behind it with Claude Code.",
+    delivered: [
+      "Website page live on GoHighLevel",
+      "Sign-up forms connected to the CRM",
+      "Automatic new-lead alerts",
+      "Parent portal with secure sign-in",
+      "Private video storage"
+    ],
+    imageUrl: "/assets/claude-code/cc-athlete-website.png"
+  },
+  {
+    id: "cc-athlete-app",
+    title: "Athlete Parent App (iPhone + Android)",
+    type: "Mobile App",
+    platform: "Claude Code · iOS · Android",
+    niche: "Youth Sports",
+    description:
+      "A native app where parents sign in, record or stream games live, and upload highlights to their athlete's website. Client name changed for privacy; mockup shown with sample data.",
+    role: "Built, tested, and published the app with Claude Code.",
+    delivered: [
+      "iPhone and Android app",
+      "Sign-in that stays saved",
+      "Game recording and 1080p live streaming",
+      "Video uploads",
+      "Automated app build pipeline",
+      "Published to Google Play testing and iPhone TestFlight"
+    ],
+    imageUrl: "/assets/claude-code/cc-athlete-app.png"
+  }
+];
+
 export const PORTFOLIO_DRIVE_LINK = "https://drive.google.com/drive/folders/1WQZUEGr-cHT2FILEXKqoYzb835eEurs4?usp=sharing";
 
 export const GRAPHICS_PROJECTS: GraphicsProject[] = [

@@ -1,11 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Globe, Palette, Video, Zap, Bot, Sparkles, Users, Volume2, VolumeX, Briefcase, FileText, Download, ClipboardList } from "lucide-react";
+import { Globe, Code2, Palette, Video, Zap, Bot, Sparkles, Users, Volume2, VolumeX, Briefcase, FileText, Download, ClipboardList } from "lucide-react";
 import {
   GLENN_INFO,
   RESUME,
   SERVICE_GROUPS,
   PROCESS_STEPS,
   FUNNEL_PROJECTS,
+  CLAUDE_CODE_PROJECTS,
   GRAPHICS_PROJECTS,
   VIDEO_PROJECTS,
   LIVE_REELS,
@@ -558,6 +559,33 @@ export default function App() {
                     delay={(idx % 3) * 0.1}
                   >
                     <CaseStudyDetails project={fun} />
+                  </ProjectCard>
+                ))}
+              </div>
+            </div>
+
+            <div id="portfolio-claude-code" className="work-group">
+              <Reveal as="h3" className="work-group-title">
+                <Code2 size={18} aria-hidden="true" /> Claude Code Projects
+              </Reveal>
+              <Reveal as="p" className="work-group-note">
+                Real client work I built with Claude Code. The client name is changed for privacy and the mockups use
+                sample data.
+              </Reveal>
+              <div className="portfolio-grid">
+                {CLAUDE_CODE_PROJECTS.map((cc, idx) => (
+                  <ProjectCard
+                    key={cc.id}
+                    category={`${cc.type} · ${cc.niche}`}
+                    title={cc.title}
+                    description={cc.description}
+                    tags={[cc.platform]}
+                    imageUrl={cc.imageUrl}
+                    imageAlt={`Mockup of the ${cc.title} project with sample data`}
+                    placeholderIcon={Code2}
+                    delay={(idx % 3) * 0.1}
+                  >
+                    <CaseStudyDetails project={cc} />
                   </ProjectCard>
                 ))}
               </div>
