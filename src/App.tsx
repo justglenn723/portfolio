@@ -17,7 +17,7 @@ import {
   ELIGIBILITY
 } from "./data";
 import { FunnelProject } from "./types";
-import { WorkflowCanvas, AiBookingDemo } from "./Showcase";
+import { WorkflowCanvas, AiBookingDemo, AdCarousel } from "./Showcase";
 
 const { messenger, whatsapp, calendar, email } = GLENN_INFO.contactLinks;
 const whatsappDigits = whatsapp.replace(/\D/g, "");
@@ -636,21 +636,9 @@ export default function App() {
               <Reveal as="h3" className="work-group-title">
                 <Palette size={18} aria-hidden="true" /> Graphic Design
               </Reveal>
-              <div className="portfolio-grid">
-                {GRAPHICS_PROJECTS.map((gph, idx) => (
-                  <ProjectCard
-                    key={gph.id}
-                    category={gph.category}
-                    title={gph.title}
-                    description={gph.description}
-                    tags={gph.software}
-                    imageUrl={gph.imageUrl}
-                    imageAlt={`Ad creatives from the ${gph.title} project`}
-                    placeholderIcon={Palette}
-                    delay={idx * 0.1}
-                  />
-                ))}
-              </div>
+              <Reveal>
+                <AdCarousel items={GRAPHICS_PROJECTS} />
+              </Reveal>
               {GRAPHICS_PROJECTS[0]?.driveLink && (
                 <div className="portfolio-more">
                   <a href={GRAPHICS_PROJECTS[0].driveLink} target="_blank" rel="noopener noreferrer" className="more-link">

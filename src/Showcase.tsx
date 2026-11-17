@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Zap, Tag, Target, MessageSquare, Clock, Bell, CheckSquare, Bot, GitBranch, Mail, CalendarCheck } from "lucide-react";
-import { AutomationProject, WorkflowStep, WorkflowStepKind } from "./types";
+import { Zap, Tag, Target, MessageSquare, Clock, Bell, CheckSquare, Bot, GitBranch, Mail, CalendarCheck, ChevronLeft, ChevronRight } from "lucide-react";
+import { AutomationProject, GraphicsProject, WorkflowStep, WorkflowStepKind } from "./types";
 
 /* ─────────────────────────────────────
    Workflow canvas — drawn to look like the
@@ -234,6 +234,152 @@ export function AiBookingDemo() {
           </ul>
         </div>
       </div>
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────
+   Ad creatives carousel: manual only (scroll, drag, swipe, arrows, keys).
+   Slides shrink toward the edges and grow as they reach the center.
+───────────────────────────────────── */
+
+export function AdCarousel({ items }: { items: GraphicsProject[] }) {
+  const trackRef = useRef<HTMLDivElement>(null);
+  const slideRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const drag = useRef({ active: false, moved: false, startX: 0, startLeft: 0 });
+  const [active, setActive] = useState(0);
+
+  // Scale and fade each slide by its distance from the track's center.
+  useEffect(() => {
+    const track = trackRef.current;
+    if (!track) return;
+    let frame = 0;
+    const update = () => {
+      frame = 0;
+      const box = track.getBoundingClientRect();
+      const center = box.left + box.width / 2;
+      let closest = 0;
+      let closestDist = Infinity;
+      slideRefs.current.forEach((slide, i) => {
+        if (!slide) return;
+        const r = slide.getBoundingClientRect();
+        const dist = Math.abs(r.left + r.width / 2 - center);
+        const t = Math.min(dist / (box.width / 2), 1); // 0 at center, 1 at the edge
+        slide.style.setProperty("--ad-scale", String(1 - t * 0.4));
+        slide.style.setProperty("--ad-fade", String(1 - t * 0.55));
+        if (dist < closestDist) {
+          closestDist = dist;
+          closest = i;
+        }
+      });
+      setActive(closest);
+    };
+    const schedule = () => {
+      if (!frame) frame = requestAnimationFrame(update);
+    };
+    // Start on the middle item so there is a smaller slide at each edge.
+    const mid = slideRefs.current[Math.floor(items.length / 2)];
+    if (mid) track.scrollLeft = mid.offsetLeft + mid.offsetWidth / 2 - track.clientWidth / 2;
+    update();
+    track.addEventListener("scroll", schedule, { passive: true });
+    window.addEventListener("resize", schedule);
+    return () => {
+      track.removeEventListener("scroll", schedule);
+      window.removeEventListener("resize", schedule);
+      cancelAnimationFrame(frame);
+    };
+  }, [items.length]);
+
+  const goTo = (i: number) => {
+    const track = trackRef.current;
+    const slide = slideRefs.current[Math.max(0, Math.min(items.length - 1, i))];
+    if (!track || !slide) return;
+    track.scrollTo({ left: slide.offsetLeft + slide.offsetWidth / 2 - track.clientWidth / 2, behavior: "smooth" });
+  };
+
+  // Mouse drag (touch and trackpads already scroll natively).
+  const onPointerDown = (e: React.PointerEvent) => {
+    if (e.pointerType !== "mouse" || !trackRef.current) return;
+    drag.current = { active: true, moved: false, startX: e.clientX, startLeft: trackRef.current.scrollLeft };
+    trackRef.current.classList.add("is-dragging");
+  };
+  const onPointerMove = (e: React.PointerEvent) => {
+    const d = drag.current;
+    if (!d.active || !trackRef.current) return;
+    const dx = e.clientX - d.startX;
+    if (Math.abs(dx) > 4) d.moved = true;
+    trackRef.current.scrollLeft = d.startLeft - dx;
+  };
+  const endDrag = () => {
+    const d = drag.current;
+    if (!d.active) return;
+    d.active = false;
+    trackRef.current?.classList.remove("is-dragging");
+    if (d.moved) goTo(active);
+  };
+
+  const current = items[active];
+  return (
+    <div className="ad-carousel">
+      <div className="ad-stage">
+        <button type="button" className="ad-arrow ad-prev" onClick={() => goTo(active - 1)} disabled={active === 0} aria-label="Previous ad set">
+          <ChevronLeft size={20} aria-hidden="true" />
+        </button>
+        <div
+          ref={trackRef}
+          className="ad-track"
+          tabIndex={0}
+          role="region"
+          aria-roledescription="carousel"
+          aria-label="Ad creatives. Scroll, drag, or use the arrow keys to browse."
+          onPointerDown={onPointerDown}
+          onPointerMove={onPointerMove}
+          onPointerUp={endDrag}
+          onPointerLeave={endDrag}
+          onKeyDown={(e) => {
+            if (e.key === "ArrowRight") { e.preventDefault(); goTo(active + 1); }
+            if (e.key === "ArrowLeft") { e.preventDefault(); goTo(active - 1); }
+          }}
+        >
+          {items.map((item, i) => (
+            <div
+              key={item.id}
+              ref={(el) => { slideRefs.current[i] = el; }}
+              className={`ad-slide ${i === active ? "is-active" : ""}`}
+              aria-roledescription="slide"
+              aria-label={`${i + 1} of ${items.length}: ${item.title}`}
+              onClick={() => { if (!drag.current.moved && i !== active) goTo(i); }}
+            >
+              <img src={item.imageUrl} alt={`Ad creatives from the ${item.title} project`} draggable={false} loading="lazy" />
+            </div>
+          ))}
+        </div>
+        <button type="button" className="ad-arrow ad-next" onClick={() => goTo(active + 1)} disabled={active === items.length - 1} aria-label="Next ad set">
+          <ChevronRight size={20} aria-hidden="true" />
+        </button>
+      </div>
+
+      <div className="ad-dots" aria-hidden="true">
+        {items.map((item, i) => (
+          <span key={item.id} className={i === active ? "is-active" : ""} />
+        ))}
+      </div>
+
+      {current && (
+        <div className="ad-caption" key={current.id}>
+          <div className="project-cat-tag">
+            <span className="project-cat-dot" />
+            {current.category}
+          </div>
+          <h4 className="project-title">{current.title}</h4>
+          <p className="project-desc">{current.description}</p>
+          <div className="project-tags">
+            {current.software.map((tag) => (
+              <span key={tag} className="project-tag">{tag}</span>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

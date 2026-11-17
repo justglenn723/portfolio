@@ -263,3 +263,59 @@
   .wf-node,.wf-cond{opacity:1;transform:none}
   .hero-title em,.section-title em,.about-heading em,.contact-heading em{color:var(--accent);background:none}
 }
+
+/* ─── AD CREATIVES CAROUSEL (manual only) ─── */
+.ad-carousel{--ad-w:clamp(220px,34vw,420px);--ad-m:0px;margin-top:8px}
+.ad-stage{position:relative}
+.ad-track{
+  display:flex;align-items:center;gap:clamp(8px,2vw,24px);
+  overflow-x:auto;overflow-y:hidden;
+  scroll-snap-type:x mandatory;scrollbar-width:none;
+  padding:28px 0;cursor:grab;outline:none;
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 9%,#000 91%,transparent);
+          mask-image:linear-gradient(90deg,transparent,#000 9%,#000 91%,transparent);
+}
+.ad-track::-webkit-scrollbar{display:none}
+.ad-track:focus-visible{box-shadow:0 0 0 2px var(--accent);border-radius:14px}
+/* Spacers let the first and last slides reach the center */
+.ad-track::before,.ad-track::after{content:"";flex:0 0 calc(50% - var(--ad-w) / 2 - var(--ad-m))}
+.ad-track.is-dragging{cursor:grabbing;scroll-snap-type:none;user-select:none}
+.ad-slide{
+  flex:0 0 var(--ad-w);aspect-ratio:1;scroll-snap-align:center;margin-inline:var(--ad-m);
+  border-radius:16px;overflow:hidden;
+  border:1px solid var(--border2);background:var(--bg3);
+  transform:scale(var(--ad-scale,.6));opacity:var(--ad-fade,.45);
+  transition:transform .12s linear,opacity .12s linear,border-color .3s,box-shadow .3s;
+  will-change:transform;
+}
+.ad-slide{position:relative;z-index:1}
+.ad-slide:not(.is-active){cursor:pointer}
+.ad-slide.is-active{z-index:2}
+.ad-slide.is-active{border-color:var(--border);box-shadow:0 24px 60px rgba(0,0,0,.55),0 0 40px rgba(0,229,255,.08)}
+.ad-slide img{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none}
+.ad-arrow{
+  position:absolute;top:50%;z-index:2;transform:translateY(-50%);
+  width:44px;height:44px;border-radius:50%;display:grid;place-items:center;
+  background:rgba(10,14,18,.8);backdrop-filter:blur(10px);
+  border:1px solid var(--border);color:var(--text);cursor:pointer;
+  transition:border-color .2s,color .2s,opacity .2s;
+}
+.ad-arrow:hover:not(:disabled){border-color:var(--accent);color:var(--accent)}
+.ad-arrow:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.ad-arrow:disabled{opacity:.3;cursor:default}
+.ad-prev{left:4px}.ad-next{right:4px}
+.ad-dots{display:flex;justify-content:center;gap:8px;margin:4px 0 22px}
+.ad-dots span{width:7px;height:7px;border-radius:99px;background:var(--dimmed);transition:width .3s,background .3s}
+.ad-dots span.is-active{width:22px;background:var(--accent)}
+.ad-caption{max-width:640px;margin:0 auto;text-align:center;animation:adCaption .35s ease}
+.ad-caption .project-cat-tag,.ad-caption .project-tags{justify-content:center}
+@keyframes adCaption{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@media (max-width:600px){
+  /* Slides overlap a little so the shrunken neighbors peek in at both edges */
+  .ad-carousel{--ad-w:54vw;--ad-m:-11vw}
+  .ad-track{gap:0}
+  .ad-arrow{width:38px;height:38px}
+}
+@media (prefers-reduced-motion:reduce){
+  .ad-slide,.ad-caption{transition:none;animation:none}
+}
