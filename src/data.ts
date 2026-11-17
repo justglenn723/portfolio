@@ -221,6 +221,12 @@ export const GRAPHICS_PROJECTS: GraphicsProject[] = [
       "Contact details placed for a fast response."
     ],
     imageUrl: "/assets/graphics/credit-brigade.png",
+    images: [
+      "/assets/graphics/ads/credit-brigade-1.webp",
+      "/assets/graphics/ads/credit-brigade-2.webp",
+      "/assets/graphics/ads/credit-brigade-3.webp",
+      "/assets/graphics/ads/credit-brigade-4.webp"
+    ],
     driveLink: PORTFOLIO_DRIVE_LINK
   },
   {
@@ -236,6 +242,15 @@ export const GRAPHICS_PROJECTS: GraphicsProject[] = [
       "Comparison and lifestyle variants for testing."
     ],
     imageUrl: "/assets/graphics/eye-mazen-gummy.png",
+    images: [
+      "/assets/graphics/ads/eye-mazen-1.webp",
+      "/assets/graphics/ads/eye-mazen-2.webp",
+      "/assets/graphics/ads/eye-mazen-3.webp",
+      "/assets/graphics/ads/eye-mazen-4.webp",
+      "/assets/graphics/ads/eye-mazen-5.webp",
+      "/assets/graphics/ads/eye-mazen-6.webp",
+      "/assets/graphics/ads/eye-mazen-7.webp"
+    ],
     driveLink: PORTFOLIO_DRIVE_LINK
   },
   {
@@ -251,6 +266,11 @@ export const GRAPHICS_PROJECTS: GraphicsProject[] = [
       "Consistent free-download call to action."
     ],
     imageUrl: "/assets/graphics/7figure-builder.png",
+    images: [
+      "/assets/graphics/ads/7figure-1.webp",
+      "/assets/graphics/ads/7figure-2.webp",
+      "/assets/graphics/ads/7figure-3.webp"
+    ],
     driveLink: PORTFOLIO_DRIVE_LINK
   }
 ];

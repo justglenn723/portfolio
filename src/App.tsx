@@ -17,7 +17,7 @@ import {
   ELIGIBILITY
 } from "./data";
 import { FunnelProject } from "./types";
-import { WorkflowCanvas, AiBookingDemo, AdCarousel } from "./Showcase";
+import { WorkflowCanvas, AiBookingDemo, AdCarousel, AutoMarquee } from "./Showcase";
 
 const { messenger, whatsapp, calendar, email } = GLENN_INFO.contactLinks;
 const whatsappDigits = whatsapp.replace(/\D/g, "");
@@ -543,8 +543,8 @@ export default function App() {
               <Reveal as="h3" className="work-group-title">
                 <Globe size={18} aria-hidden="true" /> GoHighLevel Funnels
               </Reveal>
-              <div className="portfolio-grid">
-                {FUNNEL_PROJECTS.map((fun, idx) => (
+              <AutoMarquee label="GoHighLevel funnels. Moves slowly on its own; drag or swipe to browse, hover to pause.">
+                {FUNNEL_PROJECTS.map((fun) => (
                   <ProjectCard
                     key={fun.id}
                     category={`${fun.type} · ${fun.niche}`}
@@ -556,12 +556,11 @@ export default function App() {
                     linkUrl={fun.liveUrl}
                     linkLabel="View Funnel Preview"
                     placeholderIcon={Globe}
-                    delay={(idx % 3) * 0.1}
                   >
                     <CaseStudyDetails project={fun} />
                   </ProjectCard>
                 ))}
-              </div>
+              </AutoMarquee>
             </div>
 
             <div id="portfolio-claude-code" className="work-group">

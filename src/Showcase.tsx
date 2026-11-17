@@ -239,21 +239,36 @@ export function AiBookingDemo() {
 }
 
 /* ─────────────────────────────────────
-   Ad creatives carousel: manual only (scroll, drag, swipe, arrows, keys).
+   Ad creatives carousel: manual only (scroll, drag, swipe, arrows, keys), loops forever.
    Slides shrink toward the edges and grow as they reach the center.
 ───────────────────────────────────── */
 
+const COPIES = 3; // the middle copy is "home"; the outer copies let it loop seamlessly
+
 export function AdCarousel({ items }: { items: GraphicsProject[] }) {
+  // One slide per ad, remembering which project it belongs to
+  const slides = items.flatMap((project, p) =>
+    (project.images?.length ? project.images : project.imageUrl ? [project.imageUrl] : []).map((src, i) => ({ src, p, i }))
+  );
+  const n = slides.length;
   const trackRef = useRef<HTMLDivElement>(null);
   const slideRefs = useRef<(HTMLDivElement | null)[]>([]);
   const drag = useRef({ active: false, moved: false, startX: 0, startLeft: 0 });
+  const activeRef = useRef(0);
   const [active, setActive] = useState(0);
 
-  // Scale and fade each slide by its distance from the track's center.
+  const centerOn = (i: number, smooth: boolean) => {
+    const track = trackRef.current;
+    const slide = slideRefs.current[i];
+    if (!track || !slide) return;
+    track.scrollTo({ left: slide.offsetLeft + slide.offsetWidth / 2 - track.clientWidth / 2, behavior: smooth ? "smooth" : "auto" });
+  };
+
   useEffect(() => {
     const track = trackRef.current;
-    if (!track) return;
+    if (!track || !n) return;
     let frame = 0;
+    let idle = 0;
     const update = () => {
       frame = 0;
       const box = track.getBoundingClientRect();
@@ -272,30 +287,38 @@ export function AdCarousel({ items }: { items: GraphicsProject[] }) {
           closest = i;
         }
       });
+      activeRef.current = closest;
       setActive(closest);
     };
-    const schedule = () => {
+    // Once scrolling settles in an outer copy, jump to the same slide in the middle copy (invisible).
+    const recenter = () => {
+      if (drag.current.active) return;
+      const i = activeRef.current;
+      if (i >= n && i < 2 * n) return;
+      const a = slideRefs.current[0];
+      const b = slideRefs.current[n];
+      if (!a || !b) return;
+      const shift = b.offsetLeft - a.offsetLeft;
+      track.classList.add("is-jumping");
+      track.scrollLeft += i < n ? shift : -shift;
+      requestAnimationFrame(() => track.classList.remove("is-jumping"));
+    };
+    const onScroll = () => {
       if (!frame) frame = requestAnimationFrame(update);
+      clearTimeout(idle);
+      idle = window.setTimeout(recenter, 140);
     };
-    // Start on the middle item so there is a smaller slide at each edge.
-    const mid = slideRefs.current[Math.floor(items.length / 2)];
-    if (mid) track.scrollLeft = mid.offsetLeft + mid.offsetWidth / 2 - track.clientWidth / 2;
+    centerOn(n + Math.floor(n / 2), false); // start in the middle copy, slides on both sides
     update();
-    track.addEventListener("scroll", schedule, { passive: true });
-    window.addEventListener("resize", schedule);
+    track.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
     return () => {
-      track.removeEventListener("scroll", schedule);
-      window.removeEventListener("resize", schedule);
+      track.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
       cancelAnimationFrame(frame);
+      clearTimeout(idle);
     };
-  }, [items.length]);
-
-  const goTo = (i: number) => {
-    const track = trackRef.current;
-    const slide = slideRefs.current[Math.max(0, Math.min(items.length - 1, i))];
-    if (!track || !slide) return;
-    track.scrollTo({ left: slide.offsetLeft + slide.offsetWidth / 2 - track.clientWidth / 2, behavior: "smooth" });
-  };
+  }, [n]);
 
   // Mouse drag (touch and trackpads already scroll natively).
   const onPointerDown = (e: React.PointerEvent) => {
@@ -315,14 +338,17 @@ export function AdCarousel({ items }: { items: GraphicsProject[] }) {
     if (!d.active) return;
     d.active = false;
     trackRef.current?.classList.remove("is-dragging");
-    if (d.moved) goTo(active);
+    if (d.moved) centerOn(activeRef.current, true);
   };
 
-  const current = items[active];
+  if (!n) return null;
+  const current = slides[active % n];
+  const project = items[current.p];
+  const count = project.images?.length ?? 1;
   return (
     <div className="ad-carousel">
       <div className="ad-stage">
-        <button type="button" className="ad-arrow ad-prev" onClick={() => goTo(active - 1)} disabled={active === 0} aria-label="Previous ad set">
+        <button type="button" className="ad-arrow ad-prev" onClick={() => centerOn(activeRef.current - 1, true)} aria-label="Previous ad">
           <ChevronLeft size={20} aria-hidden="true" />
         </button>
         <div
@@ -337,49 +363,143 @@ export function AdCarousel({ items }: { items: GraphicsProject[] }) {
           onPointerUp={endDrag}
           onPointerLeave={endDrag}
           onKeyDown={(e) => {
-            if (e.key === "ArrowRight") { e.preventDefault(); goTo(active + 1); }
-            if (e.key === "ArrowLeft") { e.preventDefault(); goTo(active - 1); }
+            if (e.key === "ArrowRight") { e.preventDefault(); centerOn(activeRef.current + 1, true); }
+            if (e.key === "ArrowLeft") { e.preventDefault(); centerOn(activeRef.current - 1, true); }
           }}
         >
-          {items.map((item, i) => (
-            <div
-              key={item.id}
-              ref={(el) => { slideRefs.current[i] = el; }}
-              className={`ad-slide ${i === active ? "is-active" : ""}`}
-              aria-roledescription="slide"
-              aria-label={`${i + 1} of ${items.length}: ${item.title}`}
-              onClick={() => { if (!drag.current.moved && i !== active) goTo(i); }}
-            >
-              <img src={item.imageUrl} alt={`Ad creatives from the ${item.title} project`} draggable={false} loading="lazy" />
-            </div>
-          ))}
+          {Array.from({ length: COPIES }, (_, c) =>
+            slides.map((slide, i) => {
+              const idx = c * n + i;
+              const home = c === 1;
+              return (
+                <div
+                  key={idx}
+                  ref={(el) => { slideRefs.current[idx] = el; }}
+                  className={`ad-slide ${idx === active ? "is-active" : ""}`}
+                  aria-hidden={home ? undefined : true}
+                  onClick={() => { if (!drag.current.moved && idx !== activeRef.current) centerOn(idx, true); }}
+                >
+                  <img
+                    src={slide.src}
+                    alt={home ? `${items[slide.p].title}, ad ${slide.i + 1} of ${items[slide.p].images?.length ?? 1}` : ""}
+                    draggable={false}
+                    loading={home ? "eager" : "lazy"}
+                  />
+                </div>
+              );
+            })
+          )}
         </div>
-        <button type="button" className="ad-arrow ad-next" onClick={() => goTo(active + 1)} disabled={active === items.length - 1} aria-label="Next ad set">
+        <button type="button" className="ad-arrow ad-next" onClick={() => centerOn(activeRef.current + 1, true)} aria-label="Next ad">
           <ChevronRight size={20} aria-hidden="true" />
         </button>
       </div>
 
       <div className="ad-dots" aria-hidden="true">
-        {items.map((item, i) => (
-          <span key={item.id} className={i === active ? "is-active" : ""} />
+        {items.map((item, p) => (
+          <span key={item.id} className={p === current.p ? "is-active" : ""} />
         ))}
       </div>
 
-      {current && (
-        <div className="ad-caption" key={current.id}>
-          <div className="project-cat-tag">
-            <span className="project-cat-dot" />
-            {current.category}
-          </div>
-          <h4 className="project-title">{current.title}</h4>
-          <p className="project-desc">{current.description}</p>
-          <div className="project-tags">
-            {current.software.map((tag) => (
-              <span key={tag} className="project-tag">{tag}</span>
-            ))}
-          </div>
+      <div className="ad-caption" key={project.id}>
+        <div className="project-cat-tag">
+          <span className="project-cat-dot" />
+          {project.category} &middot; Ad {current.i + 1} of {count}
         </div>
-      )}
+        <h4 className="project-title">{project.title}</h4>
+        <p className="project-desc">{project.description}</p>
+        <div className="project-tags">
+          {project.software.map((tag) => (
+            <span key={tag} className="project-tag">{tag}</span>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────
+   Auto-moving strip (funnels): drifts slowly, loops forever, drag or swipe to move it.
+   Pauses on hover, focus, touch, and for visitors who prefer reduced motion.
+───────────────────────────────────── */
+
+export function AutoMarquee({ children, speed = 28, label }: { children: React.ReactNode; speed?: number; label: string }) {
+  const trackRef = useRef<HTMLDivElement>(null);
+  const setRef = useRef<HTMLDivElement>(null);
+  const state = useRef({ pos: 0, last: 0, hover: false, focus: false, touchUntil: 0 });
+  const drag = useRef({ active: false, moved: false, startX: 0, startPos: 0 });
+
+  useEffect(() => {
+    const track = trackRef.current;
+    const set = setRef.current;
+    if (!track || !set) return;
+    // Cards drift in from the side, so skip the scroll-in fade and show them all.
+    track.querySelectorAll(".reveal, .reveal-left, .reveal-right").forEach((el) => el.classList.add("visible"));
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const st = state.current;
+    let frame = 0;
+    let prev = performance.now();
+    st.pos = track.scrollLeft;
+    st.last = track.scrollLeft;
+    const loopWidth = () => set.offsetWidth + parseFloat(getComputedStyle(track).columnGap || "0");
+    const tick = (now: number) => {
+      const dt = Math.min(now - prev, 64) / 1000;
+      prev = now;
+      // The visitor scrolled by wheel or swipe: follow them
+      if (Math.abs(track.scrollLeft - st.last) > 1) st.pos = track.scrollLeft;
+      const moving = !reduce.matches && !st.hover && !st.focus && !drag.current.active && now > st.touchUntil && !document.hidden;
+      if (moving) st.pos += speed * dt;
+      const w = loopWidth();
+      if (w > 0) {
+        if (st.pos >= w) st.pos -= w;
+        if (st.pos < 0) st.pos += w;
+      }
+      if (Math.abs(track.scrollLeft - st.pos) > 0.5) track.scrollLeft = st.pos;
+      st.last = track.scrollLeft;
+      frame = requestAnimationFrame(tick);
+    };
+    frame = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(frame);
+  }, [speed]);
+
+  const st = state.current;
+  const stopDrag = () => {
+    drag.current.active = false;
+    trackRef.current?.classList.remove("is-dragging");
+  };
+  return (
+    <div
+      ref={trackRef}
+      className="marquee"
+      role="region"
+      aria-label={label}
+      onPointerEnter={(e) => { if (e.pointerType === "mouse") st.hover = true; }}
+      onPointerLeave={() => { st.hover = false; stopDrag(); }}
+      onFocus={() => { st.focus = true; }}
+      onBlur={() => { st.focus = false; }}
+      onTouchStart={() => { st.touchUntil = Infinity; }}
+      onTouchEnd={() => { st.touchUntil = performance.now() + 2000; }}
+      onPointerDown={(e) => {
+        if (e.pointerType !== "mouse") return;
+        drag.current = { active: true, moved: false, startX: e.clientX, startPos: st.pos };
+        trackRef.current?.classList.add("is-dragging");
+      }}
+      onPointerMove={(e) => {
+        const d = drag.current;
+        if (!d.active) return;
+        const dx = e.clientX - d.startX;
+        if (Math.abs(dx) > 4) d.moved = true;
+        st.pos = d.startPos - dx;
+      }}
+      onPointerUp={stopDrag}
+      onClickCapture={(e) => {
+        // A drag should not also open a card's link
+        if (drag.current.moved) { e.preventDefault(); e.stopPropagation(); drag.current.moved = false; }
+      }}
+    >
+      <div ref={setRef} className="marquee-set">{children}</div>
+      {/* Second copy makes the loop seamless; hidden from screen readers and keyboard */}
+      <div className="marquee-set" aria-hidden="true" {...({ inert: "" } as any)}>{children}</div>
     </div>
   );
 }

@@ -22,6 +22,8 @@ export interface GraphicsProject {
   description: string;
   details: string[];
   imageUrl?: string;
+  // Every ad in the set, shown one by one in the carousel
+  images?: string[];
   driveLink?: string;
 }
 
